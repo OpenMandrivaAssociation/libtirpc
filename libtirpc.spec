@@ -1,10 +1,11 @@
 %define	major 1
-%define libname	%mklibname tirpc %{major}
+%define libname %mklibname tirpc %{major}
+%define develname %mklibname tirpc -d
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.1.7
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Libraries
 URL:		http://nfsv4.bullopensource.org/
@@ -49,13 +50,14 @@ Transport Layer Interface (TLI) or an equivalent X/Open Transport Interface
 by almost 70 vendors on all major operating systems.  TS-RPC source code 
 (RPCSRC 4.0) remains available from several internet sites.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Development files for the libtirpc library
 Group:		Development/C
-Provides:	%{name}-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}-%{release}
+Provides:	tirpc-devel = %{version}-%{release}
+Obsoletes:	%{mklibname tirpc 1 -d}
 
-%description -n	%{libname}-devel
+%description -n	%{develname}
 This package contains SunLib's implementation of transport-independent
 RPC (TI-RPC) documentation.  This library forms a piece of the base of 
 Open Network Computing (ONC), and is derived directly from the 
@@ -110,7 +112,7 @@ rm -rf %{buildroot}
 %attr(0644,root,root) %config(noreplace) %{_sysconfdir}/netconfig
 %{_libdir}/*.so.*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(0644,root,root,0755)
 %{_libdir}/*.so
 %{_libdir}/*.a
