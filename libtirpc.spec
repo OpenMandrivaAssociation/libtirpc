@@ -5,7 +5,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.1.7
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPL
 Group:		System/Libraries
 URL:		http://nfsv4.bullopensource.org/
