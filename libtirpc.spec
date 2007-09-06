@@ -15,11 +15,20 @@ Patch2:		libtirpc-0.1.7-gssapi.patch
 Patch3:		libtirpc-0.1.7-svcauthnone.patch
 Patch4:		libtirpc-0.1.7-ppc64.patch
 Patch5:		libtirpc-0.1.7-svcauthdestroy.patch
+Patch6:		libtirpc-0.1.7-xdr_bufferoverlow.patch
+Patch7:		libtirpc-0.1.7-bindresvport_ports.patch
+Patch8:		libtirpc-0.1.7-svc-run.patch
+Patch9:		libtirpc-0.1.7-clnt_raw-mutex.patch
+Patch10:	libtirpc-0.1.7-snprintf.patch
+Patch11:	libtirpc-0.1.7-bindresvport-ntohs.patch
+Patch12:	libtirpc-0.1.7-dgcall-iprecverr.patch
+Patch13:	libtirpc-0.1.7-svc-rtaddr.patch
 Patch100:	libtirpc-0.1.7-compile.patch
+Patch101:	libtirpc-gssglue.diff
 BuildRequires:	autoconf2.5
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
-BuildRequires:	libgssapi-devel
+BuildRequires:	gssglue-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
@@ -81,10 +90,23 @@ programs which use the tirpc library.
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%patch12 -p1
+%patch13 -p1
 %patch100 -p1
+%patch101 -p0
 
 %build
-autoreconf -fisv
+rm -rf autom4te.cache configure Makefile stamp-h1 
+rm -rf src/Makefile src/.deps
+rm -rf Makefile.in aclocal.m4 config.log config.h
+rm -rf depcomp missing install-sh config.status
+libtoolize --copy --force; aclocal; autoheader; automake --gnu --add-missing -c; autoconf
 
 export CFLAGS="%{optflags} -fPIC"
 
@@ -95,6 +117,7 @@ export CFLAGS="%{optflags} -fPIC"
 
 %install
 rm -rf %{buildroot}
+
 install -d %{buildroot}/etc
 
 %makeinstall_std
