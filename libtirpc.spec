@@ -29,6 +29,7 @@ BuildRequires:	autoconf2.5
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	gssglue-devel
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 This package contains SunLib's implementation of transport-independent
