@@ -4,7 +4,7 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.1.9
+Version:	0.1.10
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Libraries
