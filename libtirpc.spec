@@ -4,7 +4,7 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.1.10
+Version:	0.2.0
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Libraries
@@ -95,7 +95,6 @@ rm -rf %{buildroot}
 %files -n %{libname}
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog NEWS README
-%config(noreplace) %{_sysconfdir}/netconfig
 %{_libdir}/*.so.*
 
 %files -n %{develname}
