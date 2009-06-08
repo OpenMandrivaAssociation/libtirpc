@@ -5,7 +5,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.0
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -29,6 +29,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 %package -n	%{libname}
 Summary:	Transport Independent RPC Library
 Group:		System/Libraries
+Requires:   %{name}-%{version}
 
 %description -n	%{libname}
 This package contains SunLib's implementation of transport-independent
@@ -93,6 +94,10 @@ install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 %clean
 rm -rf %{buildroot}
 
+%files
+%defattr(-,root,root)
+%config(noreplace) %{_sysconfdir}/netconfig
+
 %files -n %{libname}
 %defattr(-,root,root)
 %doc AUTHORS ChangeLog NEWS README
@@ -107,4 +112,3 @@ rm -rf %{buildroot}
 %{_includedir}/tirpc
 %{_mandir}/man3/*
 %{_mandir}/man5/*
-%config(noreplace) %{_sysconfdir}/netconfig
