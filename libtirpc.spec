@@ -5,7 +5,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.0
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -77,9 +77,10 @@ export CFLAGS="%{optflags} -fPIC"
 %install
 rm -rf %{buildroot}
 
-install -d %{buildroot}/etc
 
 %makeinstall_std
+install -m 755 -d %{buildroot}%{_sysconfdir}
+install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
@@ -106,3 +107,4 @@ rm -rf %{buildroot}
 %{_includedir}/tirpc
 %{_mandir}/man3/*
 %{_mandir}/man5/*
+%config(noreplace) %{_sysconfdir}/netconfig
