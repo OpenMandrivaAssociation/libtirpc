@@ -5,7 +5,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.1
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -83,6 +83,10 @@ rm -rf %{buildroot}
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 
+# remove the .la file, it makes libtool reorder args when linking nfs-utils:
+# http://lists.gnu.org/archive/html/libtool/2010-03/msg00023.html 
+rm -f %{buildroot}%{_libdir}/*.la
+
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
 %endif
@@ -107,7 +111,6 @@ rm -rf %{buildroot}
 %defattr(-,root,root)
 %{_libdir}/*.so
 %{_libdir}/*.a
-%{_libdir}/*.la
 %{_libdir}/pkgconfig/libtirpc.pc
 %{_includedir}/tirpc
 %{_mandir}/man3/*
