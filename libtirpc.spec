@@ -4,12 +4,13 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.2.1
-Release:	%mkrel 4
+Version:	0.2.2
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
+Patch0:     01-remove-des-crypt.diff
 BuildRequires:	pkgconfig
 BuildRequires:	gssglue-devel
 BuildRoot:	%{_tmppath}/%{name}-%{version}
@@ -68,9 +69,11 @@ programs which use the tirpc library.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 export CFLAGS="%{optflags} -fPIC"
+autoreconf -fi
 %configure2_5x \
     --enable-gss
 %make all
