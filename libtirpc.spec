@@ -5,15 +5,15 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.2
-Release:	%mkrel 1
+Release:	2
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
-Patch0:     01-remove-des-crypt.diff
+Patch0:		01-remove-des-crypt.diff
 BuildRequires:	pkgconfig
 BuildRequires:	gssglue-devel
-BuildRoot:	%{_tmppath}/%{name}-%{version}
+BuildRequires:	autoconf automake libtool
 
 %description
 This package contains SunLib's implementation of transport-independent
@@ -30,7 +30,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 %package -n	%{libname}
 Summary:	Transport Independent RPC Library
 Group:		System/Libraries
-Requires:   %{name} = %{version}-%{release}
+Requires:	%{name} >= %{version}-%{release}
 
 %description -n	%{libname}
 This package contains SunLib's implementation of transport-independent
@@ -47,7 +47,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 %package -n	%{develname}
 Summary:	Development files for the libtirpc library
 Group:		Development/C
-Requires:	%{libname} = %{version}-%{release}
+Requires:	%{libname} >= %{version}-%{release}
 Provides:	tirpc-devel = %{version}-%{release}
 Obsoletes:	%{mklibname tirpc 1 -d}
 
@@ -88,32 +88,18 @@ install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 
 # remove the .la file, it makes libtool reorder args when linking nfs-utils:
 # http://lists.gnu.org/archive/html/libtool/2010-03/msg00023.html 
-rm -f %{buildroot}%{_libdir}/*.la
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
+# cleanups
+rm -f %{buildroot}%{_libdir}/*.*a
 
 %files
-%defattr(-,root,root)
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog NEWS README
-%{_libdir}/*.so.*
+%{_libdir}/*.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %{_libdir}/*.so
-%{_libdir}/*.a
 %{_libdir}/pkgconfig/libtirpc.pc
 %{_includedir}/tirpc
 %{_mandir}/man3/*
