@@ -1,11 +1,12 @@
 %define	major 1
 %define libname %mklibname tirpc %{major}
 %define develname %mklibname tirpc -d
+%define	static	%mklibname -d -s tirpc
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.2
-Release:	2
+Release:	3
 License:	GPL
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -66,6 +67,15 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 This package includes header files and libraries necessary for developing
 programs which use the tirpc library.
 
+%package -n	%{static}
+Summary:	Static version of libtirpc library
+Group:		Development/C
+Requires:	%{develname} >= %{EVRD}
+Provides:	tirpc-static-devel = %{EVRD}
+Obsoletes:	%{mklibname tirpc 1 -d}
+
+%description -n	%{static}
+This package contains a static library version of the libtirpc library.
 
 %prep
 %setup -q
@@ -74,8 +84,9 @@ autoreconf -fi
 
 %build
 export CFLAGS="%{optflags} -fPIC"
-%configure2_5x \
-    --enable-gss
+%configure2_5x	--enable-shared \
+		--enable-static \
+		--enable-gss
 %make all
 
 %install
@@ -85,11 +96,6 @@ rm -rf %{buildroot}
 %makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
-
-# remove the .la file, it makes libtool reorder args when linking nfs-utils:
-# http://lists.gnu.org/archive/html/libtool/2010-03/msg00023.html 
-# cleanups
-rm -f %{buildroot}%{_libdir}/*.*a
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
@@ -104,3 +110,6 @@ rm -f %{buildroot}%{_libdir}/*.*a
 %{_includedir}/tirpc
 %{_mandir}/man3/*
 %{_mandir}/man5/*
+
+%files -n %{static}
+%{_libdir}/libtirpc.a
