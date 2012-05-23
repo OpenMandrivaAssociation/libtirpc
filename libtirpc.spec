@@ -7,7 +7,7 @@ Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.2
 Release:	3
-License:	GPL
+License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
@@ -97,7 +97,7 @@ install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%doc AUTHORS ChangeLog NEWS README
+%doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/libtirpc.so.%{major}*
 
 %files -n %{devname}
