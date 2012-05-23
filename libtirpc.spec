@@ -70,10 +70,10 @@ programs which use the tirpc library.
 %prep
 %setup -q
 %patch0 -p1
+autoreconf -fi
 
 %build
 export CFLAGS="%{optflags} -fPIC"
-autoreconf -fi
 %configure2_5x \
     --enable-gss
 %make all
