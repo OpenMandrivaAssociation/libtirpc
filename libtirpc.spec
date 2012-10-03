@@ -2,16 +2,32 @@
 %define	libname	%mklibname tirpc %{major}
 %define	devname	%mklibname tirpc -d
 %define	static	%mklibname -d -s tirpc
+%define beta rc3
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.2.2
-Release:	3
+Version:	0.2.3
+%if "%beta" == ""
+Release:	1
+Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
+%else
+Release:	0.%beta.1
+# Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
+Source0:	%name-%version-%beta.tar.xz
+%endif
+# Related headers that were removed from glibc
+Source10:	nis.h
+Source11:	nis_tags.h
+Source12:	nislib.h
+Source13:	yp_prot.h
+Source14:	ypclnt.h
+Source15:	key_prot.h
+Source16:	des_crypt.h
+Source17:	rpc_des.h
+Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
-Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
-Patch0:		01-remove-des-crypt.diff
 BuildRequires:	pkgconfig
 BuildRequires:	gssglue-devel
 BuildRequires:	autoconf automake libtool
@@ -78,11 +94,20 @@ This package contains a static library version of the libtirpc library.
 
 %prep
 %setup -q
-%patch0 -p1
-autoreconf -fi
+%apply_patches
+
+libtoolize --force
+aclocal
+autoheader
+automake -a
+autoconf
+
+mkdir -p glibc-headers/rpc glibc-headers/rpcsvc
+install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-headers/rpcsvc/
+install -c -m 644 %SOURCE15 %SOURCE16 %SOURCE17 glibc-headers/rpc/
 
 %build
-export CFLAGS="%{optflags} -fPIC"
+export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers"
 %configure2_5x	--enable-shared \
 		--enable-static \
 		--enable-gss
@@ -92,6 +117,7 @@ export CFLAGS="%{optflags} -fPIC"
 %makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
+cp -a glibc-headers/* %buildroot%_includedir
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
@@ -101,11 +127,13 @@ install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 %{_libdir}/libtirpc.so.%{major}*
 
 %files -n %{devname}
-%{_libdir}/libtirpc.so
-%{_libdir}/pkgconfig/libtirpc.pc
-%{_includedir}/tirpc
-%{_mandir}/man3/*
-%{_mandir}/man5/*
+%_libdir/libtirpc.so
+%_libdir/pkgconfig/libtirpc.pc
+%_includedir/tirpc
+%_includedir/rpc
+%_includedir/rpcsvc
+%_mandir/man3/*
+%_mandir/man5/*
 
 %files -n %{static}
-%{_libdir}/libtirpc.a
+%_libdir/libtirpc.a
