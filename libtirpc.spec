@@ -8,10 +8,10 @@ Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
 %if "%beta" == ""
-Release:	1
+Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
-Release:	0.%beta.1
+Release:	0.%beta.2
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
@@ -22,8 +22,7 @@ Source12:	nislib.h
 Source13:	yp_prot.h
 Source14:	ypclnt.h
 Source15:	key_prot.h
-Source16:	des_crypt.h
-Source17:	rpc_des.h
+Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 License:	SISSL and BSD
 Group:		System/Libraries
@@ -104,10 +103,10 @@ autoconf
 
 mkdir -p glibc-headers/rpc glibc-headers/rpcsvc
 install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-headers/rpcsvc/
-install -c -m 644 %SOURCE15 %SOURCE16 %SOURCE17 glibc-headers/rpc/
+install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
-export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers"
+export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
 %configure2_5x	--enable-shared \
 		--enable-static \
 		--enable-gss
@@ -118,6 +117,16 @@ export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers"
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 cp -a glibc-headers/* %buildroot%_includedir
+cd %buildroot%_includedir/tirpc/rpc
+for i in *.h; do
+	ln -sf ../tirpc/rpc/$i %buildroot%_includedir/rpc/$i
+done
+cd ../rpcsvc
+for i in *.h; do
+	ln -sf ../tirpc/rpcsvc/$i %buildroot%_includedir/rpcsvc/$i
+done
+cd %buildroot%_includedir
+ln -s tirpc/netconfig.h .
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
@@ -130,8 +139,9 @@ cp -a glibc-headers/* %buildroot%_includedir
 %_libdir/libtirpc.so
 %_libdir/pkgconfig/libtirpc.pc
 %_includedir/tirpc
-%_includedir/rpc
-%_includedir/rpcsvc
+%_includedir/netconfig.h
+%_includedir/rpc/*
+%_includedir/rpcsvc/*
 %_mandir/man3/*
 %_mandir/man5/*
 
