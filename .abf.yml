@@ -1,9 +1,2 @@
 sources:
-  "key_prot.h:"	c7ba6f80a633f487bf70b4c8913b27c9d01452ef
-  "libtirpc-0.2.3-rc3.tar.xz:"	e920b16ed1f5ef01a9ad930dc54f1b3d50b216b7
-  "nis.h:"	457dd223d26fac6ab6e402e96c2d857e15605cca
-  "nislib.h:"	a57da1ccd786d29924142309d95bb1f0b6380093
-  "nis_tags.h:"	08d2951d031d32a4f1bd318c8b04887ec0ac92fa
-  "rpc_des.h:"	4bf7014a819e990eaf225ad83c27cb515092c3cc
-  "ypclnt.h:"	5c15b66b100c13587e1c060241324bcbb3e87b7d
-  "yp_prot.h:"	e5c19632efff1a23c050c0f8c70a210567a7be34
+  "libtirpc-0.2.2.tar.bz2": 576c8826a91110580b60c973c672836559d2805a
