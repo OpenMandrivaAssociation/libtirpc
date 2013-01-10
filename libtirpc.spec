@@ -1,7 +1,7 @@
-%define	major	1
-%define	libname	%mklibname tirpc %{major}
-%define	devname	%mklibname tirpc -d
-%define	static	%mklibname -d -s tirpc
+%define major 1
+%define libname %mklibname tirpc %{major}
+%define devname %mklibname tirpc -d
+%define static %mklibname -d -s tirpc
 %define beta rc3
 
 Summary:	Transport Independent RPC Library
@@ -11,7 +11,7 @@ Version:	0.2.3
 Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
-Release:	0.%beta.2
+Release:	0.%beta.3
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
@@ -29,7 +29,9 @@ Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
 BuildRequires:	pkgconfig
 BuildRequires:	gssglue-devel
-BuildRequires:	autoconf automake libtool
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool
 
 %description
 This package contains SunLib's implementation of transport-independent
@@ -43,7 +45,7 @@ Transport Layer Interface (TLI) or an equivalent X/Open Transport Interface
 by almost 70 vendors on all major operating systems.  TS-RPC source code 
 (RPCSRC 4.0) remains available from several internet sites.
 
-%package -n	%{libname}
+%package -n %{libname}
 Summary:	Transport Independent RPC Library
 Group:		System/Libraries
 Requires:	%{name} >= %{EVRD}
@@ -60,7 +62,7 @@ Transport Layer Interface (TLI) or an equivalent X/Open Transport Interface
 by almost 70 vendors on all major operating systems.  TS-RPC source code 
 (RPCSRC 4.0) remains available from several internet sites.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
@@ -82,7 +84,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 This package includes header files and libraries necessary for developing
 programs which use the tirpc library.
 
-%package -n	%{static}
+%package -n %{static}
 Summary:	Static version of libtirpc library
 Group:		Development/C
 Requires:	%{devname} >= %{EVRD}
@@ -107,25 +109,27 @@ install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
 export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
-%configure2_5x	--enable-shared \
-		--enable-static \
-		--enable-gss
+%configure2_5x	\
+	--enable-shared \
+	--enable-static \
+	--enable-gss
+
 %make all
 
 %install
 %makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
-cp -a glibc-headers/* %buildroot%_includedir
-cd %buildroot%_includedir/tirpc/rpc
+cp -a glibc-headers/* %{buildroot}%{_includedir}
+cd %{buildroot}%{_includedir}/tirpc/rpc
 for i in *.h; do
-	ln -sf ../tirpc/rpc/$i %buildroot%_includedir/rpc/$i
+	ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
 done
 cd ../rpcsvc
 for i in *.h; do
-	ln -sf ../tirpc/rpcsvc/$i %buildroot%_includedir/rpcsvc/$i
+	ln -sf ../tirpc/rpcsvc/$i %{buildroot}%{_includedir}/rpcsvc/$i
 done
-cd %buildroot%_includedir
+cd %{buildroot}%{_includedir}
 ln -s tirpc/netconfig.h .
 
 %files
@@ -138,10 +142,10 @@ ln -s tirpc/netconfig.h .
 %files -n %{devname}
 %_libdir/libtirpc.so
 %_libdir/pkgconfig/libtirpc.pc
-%_includedir/tirpc
-%_includedir/netconfig.h
-%_includedir/rpc/*
-%_includedir/rpcsvc/*
+%{_includedir}/tirpc
+%{_includedir}/netconfig.h
+%{_includedir}/rpc/*
+%{_includedir}/rpcsvc/*
 %_mandir/man3/*
 %_mandir/man5/*
 
