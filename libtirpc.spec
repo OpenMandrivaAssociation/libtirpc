@@ -24,6 +24,7 @@ Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
+Patch1:		libtirpc-0.2.2-automake-1.13.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc

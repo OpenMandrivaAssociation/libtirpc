@@ -1,0 +1,11 @@
+--- libtirpc-0.2.2/configure.ac.orig	2013-01-06 20:02:05.870944908 -0500
++++ libtirpc-0.2.2/configure.ac	2013-01-06 20:02:08.744876124 -0500
+@@ -17,7 +17,7 @@
+ fi
+ 
+ AC_PROG_CC
+-AM_CONFIG_HEADER(config.h)
++AC_CONFIG_HEADERS(config.h)
+ AC_PROG_LIBTOOL
+ AC_HEADER_DIRENT
+ AC_PREFIX_DEFAULT(/usr)
