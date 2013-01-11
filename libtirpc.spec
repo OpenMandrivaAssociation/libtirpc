@@ -11,7 +11,7 @@ Version:	0.2.3
 Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
-Release:	0.%beta.3
+Release:	0.%beta.4
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
