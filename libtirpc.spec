@@ -11,7 +11,7 @@ Version:	0.2.3
 Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
-Release:	0.%beta.4
+Release:	0.%beta.5
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
@@ -25,6 +25,7 @@ Source15:	key_prot.h
 Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch1:		libtirpc-0.2.2-automake-1.13.patch
+Patch2:		libtirpc-0.2.3-types.h.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
