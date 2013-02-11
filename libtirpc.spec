@@ -11,7 +11,7 @@ Version:	0.2.3
 Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
-Release:	0.%beta.5
+Release:	0.%beta.6
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
@@ -26,6 +26,9 @@ Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
+Patch3:		libtirpc-0005-rpcent-mark-getrpcbyname-name-argument-as-const-char.patch
+Patch4:		libtirpc-0006-rpcent-remove-prototypes-of-reentrant-variants.patch
+Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -64,12 +67,13 @@ Transport Layer Interface (TLI) or an equivalent X/Open Transport Interface
 by almost 70 vendors on all major operating systems.  TS-RPC source code 
 (RPCSRC 4.0) remains available from several internet sites.
 
-%package -n %{devname}
+%package -n	%{devname}
 Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
 Provides:	tirpc-devel = %{EVRD}
 Obsoletes:	%{mklibname tirpc 1 -d}
+Conflicts:	glibc < 6:2.17-1.22064.3
 
 %description -n	%{devname}
 This package contains SunLib's implementation of transport-independent
@@ -86,7 +90,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 This package includes header files and libraries necessary for developing
 programs which use the tirpc library.
 
-%package -n %{static}
+%package -n	%{static}
 Summary:	Static version of libtirpc library
 Group:		Development/C
 Requires:	%{devname} >= %{EVRD}
@@ -142,14 +146,14 @@ ln -s tirpc/netconfig.h .
 %{_libdir}/libtirpc.so.%{major}*
 
 %files -n %{devname}
+%{_bindir}/rpcgen
 %_libdir/libtirpc.so
 %_libdir/pkgconfig/libtirpc.pc
 %{_includedir}/tirpc
 %{_includedir}/netconfig.h
 %{_includedir}/rpc/*
 %{_includedir}/rpcsvc/*
-%_mandir/man3/*
-%_mandir/man5/*
+%{_mandir}/man[135]/*
 
 %files -n %{static}
-%_libdir/libtirpc.a
+%{_libdir}/libtirpc.a
