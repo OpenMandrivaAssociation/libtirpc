@@ -1,5 +1,6 @@
---- libtirpc-0.2.3/src/des_crypt.c.0000~	2012-04-26 21:53:38.000000000 +0200
-+++ libtirpc-0.2.3/src/des_crypt.c	2012-10-03 14:47:43.030223431 +0200
+diff -urN libtirpc-0.2.3/src/des_crypt.c libtirpc-0.2.3.new/src/des_crypt.c
+--- libtirpc-0.2.3/src/des_crypt.c	2013-02-13 16:13:59.000000000 +0100
++++ libtirpc-0.2.3.new/src/des_crypt.c	2013-03-19 12:24:24.368923058 +0100
 @@ -1,66 +1,60 @@
  /*
 - * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -105,7 +106,7 @@
  	for (i = (int) len; i > 0; i -= 8) { \
  		*a++ = *b++; *a++ = *b++; *a++ = *b++; *a++ = *b++; \
  		*a++ = *b++; *a++ = *b++; *a++ = *b++; *a++ = *b++; \
-@@ -68,87 +62,56 @@ extern int _des_crypt_call(char *, int,
+@@ -68,87 +62,56 @@
  }
  
  /*
@@ -229,8 +230,9 @@
 +  dp.des_mode = ECB;
 +  return common_crypt (key, buf, len, mode, &dp);
  }
---- libtirpc-0.2.3/src/des_impl.c.0000~	2012-10-03 16:22:04.661414376 +0200
-+++ libtirpc-0.2.3/src/des_impl.c	2012-10-03 15:13:25.553231339 +0200
+diff -urN libtirpc-0.2.3/src/des_impl.c libtirpc-0.2.3.new/src/des_impl.c
+--- libtirpc-0.2.3/src/des_impl.c	1970-01-01 01:00:00.000000000 +0100
++++ libtirpc-0.2.3.new/src/des_impl.c	2013-03-19 12:24:24.368923058 +0100
 @@ -0,0 +1,593 @@
 +/* Copyright (C) 1992 Eric Young */
 +/* Collected from libdes and modified for SECURE RPC by Martin Kuck 1994 */
@@ -825,9 +827,10 @@
 +
 +  return (1);
 +}
---- libtirpc-0.2.3/src/key_call.c.0000~	2012-04-26 21:53:38.000000000 +0200
-+++ libtirpc-0.2.3/src/key_call.c	2012-10-03 14:58:41.067942585 +0200
-@@ -1,463 +1,551 @@
+diff -urN libtirpc-0.2.3/src/key_call.c libtirpc-0.2.3.new/src/key_call.c
+--- libtirpc-0.2.3/src/key_call.c	2013-02-13 16:13:59.000000000 +0100
++++ libtirpc-0.2.3.new/src/key_call.c	2013-03-19 12:24:24.368923058 +0100
+@@ -1,452 +1,551 @@
  /*
 - * Copyright (c) 2009, Sun Microsystems, Inc.
 - * All rights reserved.
@@ -939,7 +942,10 @@
 -#else
 -#define	debug(msg)
 -#endif /* DEBUG */
--
++#ifndef SO_PASSCRED
++extern int _openchild (const char *command, FILE **fto, FILE **ffrom);
++#endif
+ 
 -/*
 - * Hack to allow the keyserver to use AUTH_DES (for authenticated
 - * NIS+ calls, for example).  The only functions that get called
@@ -948,16 +954,13 @@
 - * The approach is to have the keyserver fill in pointers to local
 - * implementations of these functions, and to call those in key_call().
 - */
-+#ifndef SO_PASSCRED
-+extern int _openchild (const char *command, FILE **fto, FILE **ffrom);
-+#endif
++static int key_call (u_long, xdrproc_t xdr_arg, char *,
++		     xdrproc_t xdr_rslt, char *);
  
 -cryptkeyres *(*__key_encryptsession_pk_LOCAL)() = 0;
 -cryptkeyres *(*__key_decryptsession_pk_LOCAL)() = 0;
 -des_block *(*__key_gendes_LOCAL)() = 0;
-+static int key_call (u_long, xdrproc_t xdr_arg, char *,
-+		     xdrproc_t xdr_rslt, char *);
- 
+-
 -static int key_call( u_long, xdrproc_t, void *, xdrproc_t, void *);
 +static const struct timeval trytimeout = {KEY_TIMEOUT, 0};
 +static const struct timeval tottimeout = {KEY_TIMEOUT *KEY_NRETRY, 0};
@@ -1458,45 +1461,6 @@
 -                thr_setspecific(key_call_key, (void *) kcp);
 -		kcp->client = NULL;
 -	}
--
--	/* if pid has changed, destroy client and rebuild */
--	if (kcp->client != NULL && kcp->pid != getpid()) {
--		clnt_destroy(kcp->client);
--		kcp->client = NULL;
--	}
--
--	if (kcp->client != NULL) {
--		/* if uid has changed, build client handle again */
--		if (kcp->uid != geteuid()) {
--			kcp->uid = geteuid();
--			auth_destroy(kcp->client->cl_auth);
--			kcp->client->cl_auth =
--				authsys_create("", kcp->uid, 0, 0, NULL);
--			if (kcp->client->cl_auth == NULL) {
--				clnt_destroy(kcp->client);
--				kcp->client = NULL;
--				return ((CLIENT *) NULL);
--			}
--		}
--		/* Change the version number to the new one */
--		clnt_control(kcp->client, CLSET_VERS, (void *)&vers);
--		return (kcp->client);
--	}
--	if (!(localhandle = setnetconfig())) {
--		return ((CLIENT *) NULL);
--	}
--        tpconf = NULL;
--#if defined(__FreeBSD__)
--	if (uname(&u) == -1)
--#else
--#if defined(i386)
--	if (uname(&u) == -1)
--#elif defined(sparc)
--	if (uname(&u) == -1)
--#else
--#error Unknown architecture!
--#endif
--#endif
 +  struct key_call_private *kcp = key_call_private_main;
 +  struct timeval wait_time;
 +  int fd;
@@ -1529,47 +1493,7 @@
 +      /* if other side closed socket, build handle again */
 +      clnt_control (kcp->client, CLGET_FD, (char *)&fd);
 +      if (getpeername (fd,(struct sockaddr *)&name,&namelen) == -1)
- 	{
--		endnetconfig(localhandle);
--		return ((CLIENT *) NULL);
--        }
--	while ((nconf = getnetconfig(localhandle)) != NULL) {
--		if (strcmp(nconf->nc_protofmly, NC_LOOPBACK) == 0) {
--			/*
--			 * We use COTS_ORD here so that the caller can
--			 * find out immediately if the server is dead.
--			 */
--			if (nconf->nc_semantics == NC_TPI_COTS_ORD) {
--				kcp->client = clnt_tp_create(u.nodename,
--					KEY_PROG, vers, nconf);
--				if (kcp->client)
--					break;
--			} else {
--				tpconf = nconf;
--			}
--		}
--	}
--	if ((kcp->client == (CLIENT *) NULL) && (tpconf))
--		/* Now, try the CLTS or COTS loopback transport */
--		kcp->client = clnt_tp_create(u.nodename,
--			KEY_PROG, vers, tpconf);
--	endnetconfig(localhandle);
--
--	if (kcp->client == (CLIENT *) NULL) {
--		return ((CLIENT *) NULL);
--        }
--	kcp->uid = geteuid();
--	kcp->pid = getpid();
--	kcp->client->cl_auth = authsys_create("", kcp->uid, 0, 0, NULL);
--	if (kcp->client->cl_auth == NULL) {
--		clnt_destroy(kcp->client);
--		kcp->client = NULL;
--		return ((CLIENT *) NULL);
--	}
--
--	wait_time.tv_sec = TOTAL_TIMEOUT/TOTAL_TRIES;
--	wait_time.tv_usec = 0;
--	(void) clnt_control(kcp->client, CLSET_RETRY_TIMEOUT,
++	{
 +	  auth_destroy (kcp->client->cl_auth);
 +	  clnt_destroy (kcp->client);
 +	  kcp->client = NULL;
@@ -1617,17 +1541,77 @@
 +  wait_time.tv_sec = TOTAL_TIMEOUT/TOTAL_TRIES;
 +  wait_time.tv_usec = 0;
 +  clnt_control (kcp->client, CLSET_RETRY_TIMEOUT,
- 		(char *)&wait_time);
--	if (clnt_control(kcp->client, CLGET_FD, (char *)&fd))
--		fcntl(fd, F_SETFD, 1);	/* make it "close on exec" */
++		(char *)&wait_time);
 +  if (clnt_control (kcp->client, CLGET_FD, (char *)&fd))
 +    fcntl (fd, F_SETFD, FD_CLOEXEC);  /* make it "close on exec" */
  
--	return (kcp->client);
+-	/* if pid has changed, destroy client and rebuild */
+-	if (kcp->client != NULL && kcp->pid != getpid()) {
+-		clnt_destroy(kcp->client);
+-		kcp->client = NULL;
+-	}
 +  return kcp->client;
- }
++}
  
- /* returns  0 on failure, 1 on success */
+-	if (kcp->client != NULL) {
+-		/* if uid has changed, build client handle again */
+-		if (kcp->uid != geteuid()) {
+-			kcp->uid = geteuid();
+-			auth_destroy(kcp->client->cl_auth);
+-			kcp->client->cl_auth =
+-				authsys_create("", kcp->uid, 0, 0, NULL);
+-			if (kcp->client->cl_auth == NULL) {
+-				clnt_destroy(kcp->client);
+-				kcp->client = NULL;
+-				return ((CLIENT *) NULL);
+-			}
+-		}
+-		/* Change the version number to the new one */
+-		clnt_control(kcp->client, CLSET_VERS, (void *)&vers);
+-		return (kcp->client);
+-	}
+-	if (!(localhandle = setnetconfig())) {
+-		return ((CLIENT *) NULL);
+-	}
+-        tpconf = NULL;
+-	if (uname(&u) == -1) {
+-		endnetconfig(localhandle);
+-		return ((CLIENT *) NULL);
+-        }
+-	while ((nconf = getnetconfig(localhandle)) != NULL) {
+-		if (strcmp(nconf->nc_protofmly, NC_LOOPBACK) == 0) {
+-			/*
+-			 * We use COTS_ORD here so that the caller can
+-			 * find out immediately if the server is dead.
+-			 */
+-			if (nconf->nc_semantics == NC_TPI_COTS_ORD) {
+-				kcp->client = clnt_tp_create(u.nodename,
+-					KEY_PROG, vers, nconf);
+-				if (kcp->client)
+-					break;
+-			} else {
+-				tpconf = nconf;
+-			}
+-		}
+-	}
+-	if ((kcp->client == (CLIENT *) NULL) && (tpconf))
+-		/* Now, try the CLTS or COTS loopback transport */
+-		kcp->client = clnt_tp_create(u.nodename,
+-			KEY_PROG, vers, tpconf);
+-	endnetconfig(localhandle);
+-
+-	if (kcp->client == (CLIENT *) NULL) {
+-		return ((CLIENT *) NULL);
+-        }
+-	kcp->uid = geteuid();
+-	kcp->pid = getpid();
+-	kcp->client->cl_auth = authsys_create("", kcp->uid, 0, 0, NULL);
+-	if (kcp->client->cl_auth == NULL) {
+-		clnt_destroy(kcp->client);
+-		kcp->client = NULL;
+-		return ((CLIENT *) NULL);
+-	}
++/* returns  0 on failure, 1 on success */
 +static int
 +key_call_socket (u_long proc, xdrproc_t xdr_arg, char *arg,
 +	       xdrproc_t xdr_rslt, char *rslt)
@@ -1635,14 +1619,21 @@
 +  CLIENT *clnt;
 +  struct timeval wait_time;
 +  int result = 0;
-+
+ 
+-	wait_time.tv_sec = TOTAL_TIMEOUT/TOTAL_TRIES;
+-	wait_time.tv_usec = 0;
+-	(void) clnt_control(kcp->client, CLSET_RETRY_TIMEOUT,
+-		(char *)&wait_time);
+-	if (clnt_control(kcp->client, CLGET_FD, (char *)&fd))
+-		fcntl(fd, F_SETFD, 1);	/* make it "close on exec" */
 +  if ((proc == KEY_ENCRYPT_PK) || (proc == KEY_DECRYPT_PK) ||
 +      (proc == KEY_NET_GET) || (proc == KEY_NET_PUT) ||
 +      (proc == KEY_GET_CONV))
 +    clnt = getkeyserv_handle(2); /* talk to version 2 */
 +  else
 +    clnt = getkeyserv_handle(1); /* talk to version 1 */
-+
+ 
+-	return (kcp->client);
 +  if (clnt != NULL)
 +    {
 +      wait_time.tv_sec = TOTAL_TIMEOUT;
@@ -1652,11 +1643,12 @@
 +		     wait_time) == RPC_SUCCESS)
 +	result = 1;
 +    }
- 
++
 +  return result;
-+}
-+
-+
+ }
+ 
+-/* returns  0 on failure, 1 on success */
+ 
 +/* returns 0 on failure, 1 on success */
  static int
 -key_call(proc, xdr_arg, arg, xdr_rslt, rslt)
@@ -1685,19 +1677,20 @@
 -		*(des_block*)rslt = *res;
 -		return (1);
 -	}
-+key_call (u_long proc, xdrproc_t xdr_arg, char *arg,
-+	  xdrproc_t xdr_rslt, char *rslt)
-+{
-+#ifndef SO_PASSCRED
-+  static int use_keyenvoy;
-+#endif
- 
+-
 -	if ((proc == KEY_ENCRYPT_PK) || (proc == KEY_DECRYPT_PK) ||
 -	    (proc == KEY_NET_GET) || (proc == KEY_NET_PUT) ||
 -	    (proc == KEY_GET_CONV))
 -		clnt = getkeyserv_handle(2); /* talk to version 2 */
 -	else
 -		clnt = getkeyserv_handle(1); /* talk to version 1 */
++key_call (u_long proc, xdrproc_t xdr_arg, char *arg,
++	  xdrproc_t xdr_rslt, char *rslt)
++{
++#ifndef SO_PASSCRED
++  static int use_keyenvoy;
++#endif
++
 +  if (proc == KEY_ENCRYPT_PK && __key_encryptsession_pk_LOCAL)
 +    {
 +      cryptkeyres *res;
@@ -1759,9 +1752,10 @@
  	}
  }
 +#endif /* _RPC_THREAD_SAFE_ */
---- libtirpc-0.2.3/src/Makefile.am.0000~	2012-04-26 21:53:38.000000000 +0200
-+++ libtirpc-0.2.3/src/Makefile.am	2012-10-03 16:21:27.620849184 +0200
-@@ -50,7 +50,7 @@ libtirpc_la_SOURCES = auth_none.c auth_u
+diff -urN libtirpc-0.2.3/src/Makefile.am libtirpc-0.2.3.new/src/Makefile.am
+--- libtirpc-0.2.3/src/Makefile.am	2013-02-13 16:13:59.000000000 +0100
++++ libtirpc-0.2.3.new/src/Makefile.am	2013-03-19 12:24:24.368923058 +0100
+@@ -50,7 +50,7 @@
          rpc_callmsg.c rpc_generic.c rpc_soc.c rpcb_clnt.c rpcb_prot.c \
          rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_auth_none.c \
          svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
