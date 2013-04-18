@@ -8,10 +8,10 @@ Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
 %if "%beta" == ""
-Release:	1
+Release:	2
 Source0:	http://garr.dl.sourceforge.net/project/libtirpc/libtirpc/%version/libtirpc-%version.tar.bz2
 %else
-Release:	0.%beta.6
+Release:	0.%beta.1
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
 Source0:	%name-%version-%beta.tar.xz
 %endif
@@ -27,6 +27,9 @@ Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
+Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
+Patch7:		rpcgen-compile.patch
+Patch8:		tirpc-xdr-update-from-glibc.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
