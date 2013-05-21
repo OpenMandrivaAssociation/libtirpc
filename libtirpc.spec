@@ -1,20 +1,13 @@
-%define major 1
-%define libname %mklibname tirpc %{major}
-%define devname %mklibname tirpc -d
-%define static %mklibname -d -s tirpc
-%define beta rc3
+%define major	1
+%define libname	%mklibname tirpc %{major}
+%define devname	%mklibname tirpc -d
+%define static	%mklibname -d -s tirpc
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
-%if "%beta" == ""
-Release:	2
+Release:	1
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
-%else
-Release:	0.%beta.6
-# Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
-Source0:	%name-%version-%beta.tar.xz
-%endif
 # Related headers that were removed from glibc
 Source10:	nis.h
 Source11:	nis_tags.h
@@ -26,8 +19,6 @@ Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
-Patch3:		libtirpc-0005-rpcent-mark-getrpcbyname-name-argument-as-const-char.patch
-Patch4:		libtirpc-0006-rpcent-remove-prototypes-of-reentrant-variants.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 License:	SISSL and BSD
 Group:		System/Libraries
