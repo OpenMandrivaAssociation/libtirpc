@@ -6,7 +6,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
-Release:	1
+Release:	3
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 # Related headers that were removed from glibc
 Source10:	nis.h
@@ -20,7 +20,10 @@ Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
-Patch6:		libtirpc-0.2.4-rc1.patch
+Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
+Patch7:		rpcgen-compile.patch
+Patch8:		tirpc-xdr-update-from-glibc.patch
+Patch9:		libtirpc-0.2.4-rc1.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -29,6 +32,13 @@ BuildRequires:	gssglue-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
+
+%track
+prog %name = {
+	url = http://sourceforge.net/projects/libtirpc/files/libtirpc/
+	version = %version
+	regex = "Download libtirpc-(__VER__)\.tar\.bz2"
+}
 
 %description
 This package contains SunLib's implementation of transport-independent
