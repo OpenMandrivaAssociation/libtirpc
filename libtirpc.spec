@@ -105,6 +105,7 @@ install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
 install -m644 %{SOURCE15} %{SOURCE16} %{buildroot}%{_includedir}/tirpc/rpc/
 
+install -d %{buildroot}%{_includedir}/{rpc,rpcsvc}/
 cd %{buildroot}%{_includedir}/tirpc/rpc
 for i in *.h; do
 	ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
