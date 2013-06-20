@@ -24,6 +24,7 @@ Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
 Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		libtirpc-0.2.4-rc1.patch
+Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -116,7 +117,17 @@ install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-header
 install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
-export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+export CONFIGURE_TOP="$PWD"
+export CFLAGS="%{optflags} -fPIC -I$CONFIGURE_TOP/glibc-headers -I$CONFIGURE_TOP/tirpc"
+mkdir -p uclibc
+pushd uclibc
+%uclibc_configure	\
+	--enable-shared \
+	--disable-gss
+
+%make all
+popd
+
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
