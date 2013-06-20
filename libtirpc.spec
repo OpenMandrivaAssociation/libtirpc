@@ -87,9 +87,8 @@ This package contains a static library version of the libtirpc library.
 %apply_patches
 autoreconf -fi
 
-mkdir -p glibc-headers/rpc glibc-headers/rpcsvc
-install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-headers/rpcsvc/
-install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
+install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/rpcsvc/
+install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
 %configure2_5x	\
@@ -103,7 +102,9 @@ install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 %makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
-cp -a glibc-headers/* %{buildroot}%{_includedir}
+install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
+install -m644 %{SOURCE15} %{SOURCE16} %{buildroot}%{_includedir}/tirpc/rpc/
+
 cd %{buildroot}%{_includedir}/tirpc/rpc
 for i in *.h; do
 	ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
