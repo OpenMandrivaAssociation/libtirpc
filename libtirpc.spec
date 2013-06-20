@@ -33,6 +33,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(libgssglue)
+BuildRequires:	krb5-devel
 
 %track
 prog %{name} = {
