@@ -91,17 +91,6 @@ install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-header
 install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
-export CONFIGURE_TOP="$PWD"
-export CFLAGS="%{optflags} -fPIC -I$CONFIGURE_TOP/glibc-headers -I$CONFIGURE_TOP/tirpc"
-mkdir -p uclibc
-pushd uclibc
-%uclibc_configure	\
-	--enable-shared \
-	--disable-gss
-
-%make all
-popd
-
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
