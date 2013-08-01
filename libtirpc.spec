@@ -33,6 +33,7 @@ Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
 Patch8:		tirpc-xdr-update-from-glibc.patch
+Patch9:		segfault_fix.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(libgssglue)
 
