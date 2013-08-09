@@ -118,7 +118,8 @@ pushd uclibc
 %uclibc_configure \
 --enable-shared \
 --enable-static \
---enable-gas
+--enable-gss
+
 %make all
 popd
 %endif
