@@ -1,3 +1,5 @@
+%define _disable_ld_no_undefined 1
+
 %define major 1
 %define libname %mklibname tirpc %{major}
 %define devname %mklibname tirpc -d
@@ -110,12 +112,10 @@ install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
 
-CONFIGURE_TOP="$PWD"
-
 %if %{with uclibc}
 mkdir -p uclibc
 pushd uclibc
-export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+CONFIGURE_TOP="$PWD"
 
 %uclibc_configure \
 --enable-shared \
@@ -128,7 +128,7 @@ popd
 
 mkdir -p system
 pushd system
-export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+CONFIGURE_TOP="$PWD"
 
 %configure2_5x	\
 	--enable-shared \
