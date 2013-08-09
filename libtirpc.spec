@@ -4,6 +4,8 @@
 %define static %mklibname -d -s tirpc
 %define beta %nil
 
+%bcond_without uclibc
+
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
@@ -11,7 +13,7 @@ License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	3
+Release:	4
 Source0:	http://garr.dl.sourceforge.net/project/libtirpc/libtirpc/%{version}/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
@@ -36,6 +38,9 @@ Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		segfault_fix.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(libgssglue)
+%if %{with uclibc}
+BuildRequires: uClibc-devel >= 0.9.33.2-15
+%endif
 
 %track
 prog %{name} = {
@@ -63,6 +68,16 @@ Requires:	%{name} >= %{EVRD}
 
 %description -n	%{libname}
 This package contains the shared library for %{name}.
+
+
+%if %{with uclibc}
+%package -n uclibc-%{libname}
+Summary:	Transport Independent RPC Library (uClibc build)
+Group:		System/Libraries
+
+%description -n uclibc-%{libname}
+This package contains the uClibc shared library for %{name}.
+%endif
 
 %package -n	%{devname}
 Summary:	Development files for the libtirpc library
@@ -95,15 +110,35 @@ install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
 export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+
+
+%if %{with uclibc}
+mkdir -p uclibc
+pushd uclibc
+%uclibc_configure \
+--enable-shared \
+--enable-static \
+--enable-gas
+%make all
+popd
+%endif
+
+mkdir -p system
+pushd system
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
 	--enable-gss
 
 %make all
+popd
 
 %install
-%makeinstall_std
+%if %{with uclibc}
+%makeinstall_std -C uclibc
+%endif
+
+%makeinstall_std -C system
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 cp -a glibc-headers/* %{buildroot}%{_includedir}
@@ -122,10 +157,16 @@ ln -s tirpc/netconfig.h .
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%doc AUTHORS ChangeLog COPYING NEWS README
+
 %{_libdir}/libtirpc.so.%{major}*
 
+%if %{with uclibc}
+%files -n uclibc-%{libname}
+%{uclibc_root}%{_libdir}/libtirpc.so.%{major}*
+%endif
+
 %files -n %{devname}
+%doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/rpcgen
 %_libdir/libtirpc.so
 %_libdir/pkgconfig/libtirpc.pc
