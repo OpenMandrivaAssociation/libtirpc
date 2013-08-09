@@ -110,7 +110,7 @@ install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
 export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
-
+CONFIGURE_TOP="$PWD"
 
 %if %{with uclibc}
 mkdir -p uclibc
