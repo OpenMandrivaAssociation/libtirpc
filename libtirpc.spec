@@ -109,12 +109,14 @@ install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-header
 install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
 
 %build
-export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+
 CONFIGURE_TOP="$PWD"
 
 %if %{with uclibc}
 mkdir -p uclibc
 pushd uclibc
+export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+
 %uclibc_configure \
 --enable-shared \
 --enable-static \
@@ -126,6 +128,8 @@ popd
 
 mkdir -p system
 pushd system
+export CFLAGS="%{optflags} -fPIC -I`pwd`/glibc-headers -I`pwd`/tirpc"
+
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
