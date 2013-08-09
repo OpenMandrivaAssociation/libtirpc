@@ -165,7 +165,6 @@ ln -s tirpc/netconfig.h .
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-
 %{_libdir}/libtirpc.so.%{major}*
 
 %if %{with uclibc}
@@ -176,13 +175,23 @@ ln -s tirpc/netconfig.h .
 %files -n %{devname}
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/rpcgen
-%_libdir/libtirpc.so
-%_libdir/pkgconfig/libtirpc.pc
+%{_libdir}/libtirpc.so
+%{_libdir}/pkgconfig/libtirpc.pc
 %{_includedir}/tirpc
 %{_includedir}/netconfig.h
 %{_includedir}/rpc/*
 %{_includedir}/rpcsvc/*
 %{_mandir}/man[135]/*
+%if %{with uclibc}
+%{uclibc_root}%{_bindir}/rpcgen
+%{uclibc_root}%{_libdir}/libtirpc.so
+%{uclibc_root}%{_libdir}/pkgconfig/libtirpc.pc
+%endif
 
 %files -n %{static}
 %{_libdir}/libtirpc.a
+%if %{with uclibc}
+%{uclibc_root}%{_libdir}/libtirpc.a
+%endif
+
+
