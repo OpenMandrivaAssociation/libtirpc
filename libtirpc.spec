@@ -111,12 +111,12 @@ install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/
 install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
+CONFIGURE_TOP="$PWD"
 export CFLAGS="%{optflags} -fPIC"
 
 %if %{with uclibc}
 mkdir -p uclibc
 pushd uclibc
-CONFIGURE_TOP="$PWD"
 
 %uclibc_configure \
 --enable-shared \
@@ -129,7 +129,6 @@ popd
 
 mkdir -p system
 pushd system
-CONFIGURE_TOP="$PWD"
 
 %configure2_5x	\
 	--enable-shared \
