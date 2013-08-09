@@ -111,6 +111,7 @@ install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/
 install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
+export CFLAGS="%{optflags} -fPIC"
 
 %if %{with uclibc}
 mkdir -p uclibc
