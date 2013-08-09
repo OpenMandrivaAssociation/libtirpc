@@ -14,7 +14,7 @@ Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
 Release:	4
-Source0:	http://garr.dl.sourceforge.net/project/libtirpc/libtirpc/%{version}/%{name}-%{version}.tar.bz2
+Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
 # Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
@@ -38,6 +38,7 @@ Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		segfault_fix.patch
 BuildRequires:	libtool
 BuildRequires:	pkgconfig(libgssglue)
+BuildRequires:	krb5-devel
 %if %{with uclibc}
 BuildRequires: uClibc-devel >= 0.9.33.2-15
 %endif
@@ -104,9 +105,8 @@ This package contains a static library version of the libtirpc library.
 %apply_patches
 autoreconf -fi
 
-mkdir -p glibc-headers/rpc glibc-headers/rpcsvc
-install -c -m 644 %SOURCE10 %SOURCE11 %SOURCE12 %SOURCE13 %SOURCE14 glibc-headers/rpcsvc/
-install -c -m 644 %SOURCE15 %SOURCE16 glibc-headers/rpc/
+install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/rpcsvc/
+install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
 
@@ -146,7 +146,10 @@ popd
 %makeinstall_std -C system
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
-cp -a glibc-headers/* %{buildroot}%{_includedir}
+install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
+install -m644 %{SOURCE15} %{SOURCE16} %{buildroot}%{_includedir}/tirpc/rpc/
+
+install -d %{buildroot}%{_includedir}/{rpc,rpcsvc}/
 cd %{buildroot}%{_includedir}/tirpc/rpc
 for i in *.h; do
 	ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
