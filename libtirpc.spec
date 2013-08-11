@@ -40,7 +40,7 @@ Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		segfault_fix.patch
 BuildRequires:	libtool
 #BuildRequires:	pkgconfig(libgssglue)
-BuildRequires:	krb5-devel
+#BuildRequires:	krb5-devel
 %if %{with uclibc}
 BuildRequires: uClibc-devel >= 0.9.33.2-15
 %endif
