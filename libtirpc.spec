@@ -7,6 +7,7 @@
 %define beta %nil
 
 %bcond_without uclibc
+%bcond_with gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
@@ -39,8 +40,14 @@ Patch7:		rpcgen-compile.patch
 Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		segfault_fix.patch
 BuildRequires:	libtool
-#BuildRequires:	pkgconfig(libgssglue)
-#BuildRequires:	krb5-devel
+%if %{with gss}
+BuildRequires:	pkgconfig(libgssglue)
+BuildRequires:	krb5-devel
+%else
+BuildConflicts:	krb5-devel
+BuildConflicts:	pkgconfig(libgssglue)
+BuildConflicts: uclibc-%{libname}
+%endif
 %if %{with uclibc}
 BuildRequires: uClibc-devel >= 0.9.33.2-15
 %endif
@@ -121,7 +128,11 @@ pushd uclibc
 %uclibc_configure \
 --enable-shared \
 --enable-static \
+%if %{with gss}
+--enable-gss
+%else
 --disable-gss
+%endif
 
 %make all
 popd
@@ -133,7 +144,11 @@ pushd system
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
-	--disable-gss
+%if %{with gss}
+	--enable-gss
+%else
+i	--disable-gss
+%endif
 
 %make all
 popd
@@ -193,5 +208,3 @@ ln -s tirpc/netconfig.h .
 %if %{with uclibc}
 %{uclibc_root}%{_libdir}/libtirpc.a
 %endif
-
-
