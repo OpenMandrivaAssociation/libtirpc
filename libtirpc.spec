@@ -7,7 +7,7 @@
 %define beta %nil
 
 %bcond_without uclibc
-%bcond_with gss
+%bcond_without gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
@@ -16,7 +16,7 @@ License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	6
+Release:	7
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
