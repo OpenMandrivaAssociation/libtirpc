@@ -1,0 +1,46 @@
+Executing(%prep): /bin/sh -e /var/tmp/rpm-tmp.11439
++ umask 022
++ cd /home/bero/abf/libtirpc/BUILD
++ '[' 1 -eq 1 ']'
++ '[' 1 -eq 1 ']'
++ '[' 1 -eq 1 ']'
++ cd /home/bero/abf/libtirpc/BUILD
++ rm -rf libtirpc-0.2.3
++ /usr/bin/bzip2 -dc /home/bero/abf/libtirpc/libtirpc-0.2.3.tar.bz2
++ /bin/tar -xf -
++ STATUS=0
++ '[' 0 -ne 0 ']'
++ cd libtirpc-0.2.3
++ echo 'Patch #0 (libtirpc-0.2.3-add-missing-bits-from-glibc.patch):'
+Patch #0 (libtirpc-0.2.3-add-missing-bits-from-glibc.patch):
++ /bin/cat /home/bero/abf/libtirpc/libtirpc-0.2.3-add-missing-bits-from-glibc.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0000~
++ echo 'Patch #1 (libtirpc-0.2.2-automake-1.13.patch):'
+Patch #1 (libtirpc-0.2.2-automake-1.13.patch):
++ /bin/cat /home/bero/abf/libtirpc/libtirpc-0.2.2-automake-1.13.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0001~
++ echo 'Patch #2 (libtirpc-0.2.3-types.h.patch):'
+Patch #2 (libtirpc-0.2.3-types.h.patch):
++ /bin/cat /home/bero/abf/libtirpc/libtirpc-0.2.3-types.h.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0002~
++ echo 'Patch #5 (libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch):'
+Patch #5 (libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch):
++ /bin/cat /home/bero/abf/libtirpc/libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0005~
++ echo 'Patch #6 (libtirpc-0.2.3-update-rpcgen-from-glibc.patch):'
+Patch #6 (libtirpc-0.2.3-update-rpcgen-from-glibc.patch):
++ /bin/cat /home/bero/abf/libtirpc/libtirpc-0.2.3-update-rpcgen-from-glibc.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0006~
++ echo 'Patch #7 (rpcgen-compile.patch):'
+Patch #7 (rpcgen-compile.patch):
++ /bin/cat /home/bero/abf/libtirpc/rpcgen-compile.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0007~
++ echo 'Patch #8 (tirpc-xdr-update-from-glibc.patch):'
+Patch #8 (tirpc-xdr-update-from-glibc.patch):
++ /bin/cat /home/bero/abf/libtirpc/tirpc-xdr-update-from-glibc.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0008~
++ echo 'Patch #9 (segfault_fix.patch):'
+Patch #9 (segfault_fix.patch):
++ /bin/cat /home/bero/abf/libtirpc/segfault_fix.patch
++ /usr/bin/patch --fuzz=0 -s -U -p1 -b --suffix .0009~
++ autoreconf -fi
