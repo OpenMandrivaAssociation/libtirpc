@@ -147,7 +147,7 @@ pushd system
 %if %{with gss}
 	--enable-gss
 %else
-i	--disable-gss
+	--disable-gss
 %endif
 
 %make all
