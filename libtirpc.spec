@@ -3,8 +3,8 @@
 %define devname	%mklibname tirpc -d
 %define static	%mklibname -d -s tirpc
 
-%bcond_without uclibc
-%bcond_without gss
+%bcond_with	uclibc
+%bcond_without	gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
