@@ -3,14 +3,17 @@
 %define devname	%mklibname tirpc -d
 %define static	%mklibname -d -s tirpc
 
+%bcond_without uclibc
+%bcond_without gss
+
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
 Release:	3
-Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
+Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 # Related headers that were removed from glibc
 Source10:	nis.h
 Source11:	nis_tags.h
@@ -28,11 +31,18 @@ Patch7:		rpcgen-compile.patch
 Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		libtirpc-0.2.4-rc1.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
+
 BuildRequires:	pkgconfig
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
+buildRequires:	libtool
+%if %{with gss}
 BuildRequires:	krb5-devel
+%endif
+%if %{with uclibc}
+BuildRequires: uClibc-devel >= 0.9.33.2-15
+%endif
 
 %track
 prog %{name} = {
@@ -60,6 +70,16 @@ Requires:	%{name} >= %{EVRD}
 
 %description -n	%{libname}
 This package contains the shared library for %{name}.
+
+
+%if %{with uclibc}
+%package -n uclibc-%{libname}
+Summary:	Transport Independent RPC Library (uClibc build)
+Group:		System/Libraries
+
+%description -n uclibc-%{libname}
+This package contains the uClibc shared library for %{name}.
+%endif
 
 %package -n	%{devname}
 Summary:	Development files for the libtirpc library
@@ -90,15 +110,43 @@ install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/
 install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 
 %build
+CONFIGURE_TOP="$PWD"
+export CFLAGS="%{optflags} -fPIC"
+
+%if %{with uclibc}
+mkdir -p uclibc
+pushd uclibc
+
+%uclibc_configure \
+	--enable-shared \
+	--enable-static \
+	--disable-gss
+
+%make all
+popd
+%endif
+
+mkdir -p system
+pushd system
+
 %configure2_5x	\
 	--enable-shared \
 	--enable-static \
+%if %{with gss}
 	--enable-gss
+%else
+	--disable-gss
+%endif
 
 %make all
+popd
 
 %install
-%makeinstall_std
+%if %{with uclibc}
+%makeinstall_std -C uclibc
+%endif
+
+%makeinstall_std -C system
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
 install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
@@ -120,18 +168,31 @@ ln -s tirpc/netconfig.h .
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%doc AUTHORS ChangeLog COPYING NEWS README
 %{_libdir}/libtirpc.so.%{major}*
 
+%if %{with uclibc}
+%files -n uclibc-%{libname}
+%{uclibc_root}%{_libdir}/libtirpc.so.%{major}*
+%endif
+
 %files -n %{devname}
+%doc AUTHORS ChangeLog COPYING NEWS README
 %{_bindir}/rpcgen
-%_libdir/libtirpc.so
-%_libdir/pkgconfig/libtirpc.pc
+%{_libdir}/libtirpc.so
+%{_libdir}/pkgconfig/libtirpc.pc
 %{_includedir}/tirpc
 %{_includedir}/netconfig.h
 %{_includedir}/rpc/*
 %{_includedir}/rpcsvc/*
 %{_mandir}/man[135]/*
+%if %{with uclibc}
+%{uclibc_root}%{_bindir}/rpcgen
+%{uclibc_root}%{_libdir}/libtirpc.so
+%{uclibc_root}%{_libdir}/pkgconfig/libtirpc.pc
+%endif
 
 %files -n %{static}
 %{_libdir}/libtirpc.a
+%if %{with uclibc}
+%{uclibc_root}%{_libdir}/libtirpc.a
+%endif

@@ -1,0 +1,32 @@
+diff -rupN /home/colin/Development/libtirpc/libtirpc-0.2.3/src/auth_gss.c /home/colin/libtirpc-0.2.3/src/auth_gss.c
+--- libtirpc-0.2.3/src/auth_gss.c	2013-02-13 15:13:59.000000000 +0000
++++ libtirpc-0.2.3/src/auth_gss.c	2013-07-31 02:51:56.000000000 +0100
+@@ -269,6 +269,7 @@ authgss_get_private_data(AUTH *auth, str
+ 	 * send an RPCSEC_GSS_DESTROY request which might inappropriately
+ 	 * destroy the context.
+ 	 */
++        gd->ctx = GSS_C_NO_CONTEXT;
+ 	gd->gc.gc_ctx.length = 0;
+ 	gd->gc.gc_ctx.value = NULL;
+ 
+@@ -284,7 +285,8 @@ authgss_free_private_data(struct authgss
+ 	if (!pd)
+ 		return (FALSE);
+ 
+-	pd->pd_ctx = NULL;
++	if (pd->pd_ctx != GSS_C_NO_CONTEXT)
++		gss_delete_sec_context(&min_stat, &pd->pd_ctx, NULL);
+ 	gss_release_buffer(&min_stat, &pd->pd_ctx_hndl);
+ 	memset(&pd->pd_ctx_hndl, 0, sizeof(pd->pd_ctx_hndl));
+ 	pd->pd_seq_win = 0;
+diff -rupN /home/colin/Development/libtirpc/libtirpc-0.2.3/src/svc_dg.c /home/colin/libtirpc-0.2.3/src/svc_dg.c
+--- libtirpc-0.2.3/src/svc_dg.c	2013-02-13 15:13:59.000000000 +0000
++++ libtirpc-0.2.3/src/svc_dg.c	2013-07-31 02:51:56.000000000 +0100
+@@ -284,7 +284,6 @@ svc_dg_getargs(xprt, xdr_args, args_ptr)
+ {
+ 	if (! SVCAUTH_UNWRAP(xprt->xp_auth, &(su_data(xprt)->su_xdrs),
+ 			     xdr_args, args_ptr)) {
+-		(void)svc_freeargs(xprt, xdr_args, args_ptr);
+ 		return FALSE;
+ 	}
+ 	return TRUE;
