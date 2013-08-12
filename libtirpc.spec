@@ -118,6 +118,7 @@ mkdir -p uclibc
 pushd uclibc
 
 %uclibc_configure \
+	--libdir=%{uclibc_root}/%{_lib} \
 	--enable-shared \
 	--enable-static \
 	--disable-gss
@@ -130,6 +131,7 @@ mkdir -p system
 pushd system
 
 %configure2_5x	\
+	--libdir=/%{_lib} \
 	--enable-shared \
 	--enable-static \
 %if %{with gss}
@@ -144,6 +146,10 @@ popd
 %install
 %if %{with uclibc}
 %makeinstall_std -C uclibc
+install -d %{buildroot}%{uclibc_root}%{_libdir}
+mv %{buildroot}%{uclibc_root}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
+rm %{buildroot}%{uclibc_root}/%{_lib}/libtirpc.so
+ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
 %endif
 
 %makeinstall_std -C system
@@ -164,15 +170,22 @@ done
 cd %{buildroot}%{_includedir}
 ln -s tirpc/netconfig.h .
 
+install -d %{buildroot}%{_libdir}
+mv %{buildroot}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
+mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
+rm %{buildroot}/%{_lib}/libtirpc.so
+ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
+
+
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%{_libdir}/libtirpc.so.%{major}*
+/%{_lib}/libtirpc.so.%{major}*
 
 %if %{with uclibc}
 %files -n uclibc-%{libname}
-%{uclibc_root}%{_libdir}/libtirpc.so.%{major}*
+%{uclibc_root}/%{_lib}/libtirpc.so.%{major}*
 %endif
 
 %files -n %{devname}
