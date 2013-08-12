@@ -30,11 +30,12 @@ Patch7:		rpcgen-compile.patch
 Patch8:		tirpc-xdr-update-from-glibc.patch
 Patch9:		libtirpc-0.2.4-rc2.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
+Patch11:	libtirpc-0009-Automatically-generate-XDR-header-files-from-.x-sour.patch
+Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
 
 BuildRequires:	pkgconfig
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool
 buildRequires:	libtool
 %if %{with gss}
 BuildRequires:	krb5-devel
