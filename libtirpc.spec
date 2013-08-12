@@ -121,7 +121,11 @@ pushd uclibc
 	--libdir=%{uclibc_root}/%{_lib} \
 	--enable-shared \
 	--enable-static \
+%if %{with gss}
+	--enable-gss
+%else
 	--disable-gss
+%endif
 
 %make all
 popd
