@@ -1,0 +1,170 @@
+diff -up libtirpc-0.2.3/autogen.sh.orig libtirpc-0.2.3/autogen.sh
+--- libtirpc-0.2.3/autogen.sh.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/autogen.sh	2013-07-01 10:08:16.723416858 -0400
+@@ -37,6 +37,6 @@ fi
+ 
+ aclocal
+ libtoolize --force --copy
+-autoheader
++#autoheader
+ automake --add-missing --copy --gnu # -Wall
+ autoconf # -Wall
+diff -up libtirpc-0.2.3/configure.ac.orig libtirpc-0.2.3/configure.ac
+--- libtirpc-0.2.3/configure.ac.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/configure.ac	2013-07-01 10:08:16.723416858 -0400
+@@ -1,19 +1,34 @@
+ AC_INIT(libtirpc, 0.2.3)
+-AM_INIT_AUTOMAKE(libtirpc, 0.2.3)
++AM_INIT_AUTOMAKE
+ AM_MAINTAINER_MODE
+ AC_CONFIG_SRCDIR([src/auth_des.c])
+ AC_CONFIG_MACRO_DIR([m4])
+ 
+ AC_ARG_ENABLE(gss,[  --enable-gss            Turn on gss api], [case "${enableval}" in
+-        yes) gss=true ; AC_CHECK_LIB([gssapi],[gss_init_sec_context]) ;;
++        yes) gss=true ;;
+         no)  gss=false ;;
+         *) AC_MSG_ERROR(bad value ${enableval} for --enable-gss) ;;
+       esac],[gss=false])
+ AM_CONDITIONAL(GSS, test x$gss = xtrue)
++AC_ARG_WITH(gssglue,
++		[  --with-gssglue        Use libgssglue],
++		 [case "${enableval}" in
++		  yes) gssglue=true ;;
++		  no)  gssglue=false ;;
++		  *) AC_MSG_ERROR(bad value ${enableval} for --with-gssglue) ;;
++		  esac],
++		[gssglue=false])
++AM_CONDITIONAL(USEGSSGLUE, test x$gssglue = xtrue)
+ if test x$gss = xtrue; then
+-	AC_DEFINE(HAVE_LIBGSSAPI, 1, [])
+-	PKG_CHECK_MODULES(GSSGLUE, libgssglue, [],
+-	AC_MSG_ERROR([Unable to locate information required to use libgssglue.]))
++	if test x$gssglue = xtrue; then
++		PKG_CHECK_MODULES(GSSAPI, libgssglue, [],
++		AC_MSG_ERROR([Unable to locate information required to use libgssglue.]))
++	else
++		GSSAPI_CFLAGS=`krb5-config --cflags gssapi`
++		GSSAPI_LIBS=`krb5-config --libs gssapi`
++		AC_SUBST([GSSAPI_CFLAGS])
++		AC_SUBST([GSSAPI_LIBS])
++	fi
+ fi
+ AC_ARG_ENABLE(ipv6,
+ 	[AC_HELP_STRING([--disable-ipv6], [Disable IPv6 support @<:@default=no@:>@])],
+@@ -24,7 +39,7 @@ if test "x$enable_ipv6" != xno; then
+ fi
+ 
+ AC_PROG_CC
+-AM_CONFIG_HEADER(config.h)
++m4_pattern_allow(AM_CONFIG_HEADERS(config.h))
+ AC_PROG_LIBTOOL
+ AC_HEADER_DIRENT
+ AC_PREFIX_DEFAULT(/usr)
+diff -up libtirpc-0.2.3/src/auth_gss.c.orig libtirpc-0.2.3/src/auth_gss.c
+--- libtirpc-0.2.3/src/auth_gss.c.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/src/auth_gss.c	2013-07-01 10:08:16.724416786 -0400
+@@ -269,6 +269,7 @@ authgss_get_private_data(AUTH *auth, str
+ 	 * send an RPCSEC_GSS_DESTROY request which might inappropriately
+ 	 * destroy the context.
+ 	 */
++        gd->ctx = GSS_C_NO_CONTEXT;
+ 	gd->gc.gc_ctx.length = 0;
+ 	gd->gc.gc_ctx.value = NULL;
+ 
+@@ -284,7 +285,8 @@ authgss_free_private_data(struct authgss
+ 	if (!pd)
+ 		return (FALSE);
+ 
+-	pd->pd_ctx = NULL;
++	if (pd->pd_ctx != GSS_C_NO_CONTEXT)
++		gss_delete_sec_context(&min_stat, &pd->pd_ctx, NULL);
+ 	gss_release_buffer(&min_stat, &pd->pd_ctx_hndl);
+ 	memset(&pd->pd_ctx_hndl, 0, sizeof(pd->pd_ctx_hndl));
+ 	pd->pd_seq_win = 0;
+diff -up libtirpc-0.2.3/src/clnt_vc.c.orig libtirpc-0.2.3/src/clnt_vc.c
+--- libtirpc-0.2.3/src/clnt_vc.c.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/src/clnt_vc.c	2013-07-01 10:08:16.724416786 -0400
+@@ -505,7 +505,7 @@ clnt_vc_control(cl, request, info)
+ 	sigset_t newmask;
+ 	int rpc_lock_value;
+ 	u_int32_t tmp;
+-	u_long ltmp;
++	u_int32_t ltmp;
+ 
+ 	assert(cl != NULL);
+ 
+diff -up libtirpc-0.2.3/src/Makefile.am.orig libtirpc-0.2.3/src/Makefile.am
+--- libtirpc-0.2.3/src/Makefile.am.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/src/Makefile.am	2013-07-01 10:08:16.723416858 -0400
+@@ -6,7 +6,7 @@
+ ## anything like that.
+ 
+ 
+-INCLUDES = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 -DVERSION="\"$(VERSION)\"" \
++AM_CPPFLAGS = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 \
+ 		-D_GNU_SOURCE -Wall -pipe  
+ 
+ lib_LTLIBRARIES = libtirpc.la
+@@ -58,8 +58,8 @@ libtirpc_la_SOURCES += xdr.c xdr_rec.c x
+ ## Secure-RPC
+ if GSS
+     libtirpc_la_SOURCES += auth_gss.c authgss_prot.c svc_auth_gss.c
+-    libtirpc_la_LDFLAGS += $(GSSGLUE_LIBS)
+-    libtirpc_la_CFLAGS = -DHAVE_RPCSEC_GSS $(GSSGLUE_CFLAGS)
++    libtirpc_la_LDFLAGS += $(GSSAPI_LIBS)
++    libtirpc_la_CFLAGS = -DHAVE_RPCSEC_GSS $(GSSAPI_CFLAGS)
+ endif
+ 
+ ## libtirpc_a_SOURCES += key_call.c key_prot_xdr.c getpublickey.c
+diff -up libtirpc-0.2.3/src/svc_dg.c.orig libtirpc-0.2.3/src/svc_dg.c
+--- libtirpc-0.2.3/src/svc_dg.c.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/src/svc_dg.c	2013-07-01 10:08:16.725416716 -0400
+@@ -284,7 +284,6 @@ svc_dg_getargs(xprt, xdr_args, args_ptr)
+ {
+ 	if (! SVCAUTH_UNWRAP(xprt->xp_auth, &(su_data(xprt)->su_xdrs),
+ 			     xdr_args, args_ptr)) {
+-		(void)svc_freeargs(xprt, xdr_args, args_ptr);
+ 		return FALSE;
+ 	}
+ 	return TRUE;
+diff -up libtirpc-0.2.3/tirpc/rpc/auth.h.orig libtirpc-0.2.3/tirpc/rpc/auth.h
+--- libtirpc-0.2.3/tirpc/rpc/auth.h.orig	2013-02-13 10:13:59.000000000 -0500
++++ libtirpc-0.2.3/tirpc/rpc/auth.h	2013-07-01 10:08:16.725416716 -0400
+@@ -51,7 +51,6 @@
+ #include <sys/cdefs.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+-#include <stdio.h>
+ 
+ 
+ #define MAX_AUTH_BYTES	400
+@@ -249,19 +248,11 @@ auth_put(AUTH *auth)
+ #define auth_refresh(auth, msg)		\
+ 		((*((auth)->ah_ops->ah_refresh))(auth, msg))
+ 
+-#if defined(__GNUC__) && defined(DEBUG)
+-#define auth_log_debug(fmt,args...) printf(stderr, fmt, args)
+-#else
+-#define auth_log_debug(fmt,args...)
+-#endif
+-
+ #define AUTH_DESTROY(auth)						\
+ 		do {							\
+ 			int refs;					\
+ 			if ((refs = auth_put((auth))) == 0)		\
+ 				((*((auth)->ah_ops->ah_destroy))(auth));\
+-			auth_log_debug("%s: auth_put(), refs %d\n",	\
+-				__func__, refs);			\
+ 		} while (0)
+ 
+ #define auth_destroy(auth)						\
+@@ -269,8 +260,6 @@ auth_put(AUTH *auth)
+ 			int refs;					\
+ 			if ((refs = auth_put((auth))) == 0)		\
+ 				((*((auth)->ah_ops->ah_destroy))(auth));\
+-			auth_log_debug("%s: auth_put(), refs %d\n",	\
+-				__func__, refs);			\
+ 		} while (0)
+ 
+ #define AUTH_WRAP(auth, xdrs, xfunc, xwhere)            \
