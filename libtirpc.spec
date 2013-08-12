@@ -23,7 +23,6 @@ Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
-Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
