@@ -16,7 +16,7 @@ License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	7
+Release:	8
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
@@ -93,6 +93,9 @@ This package contains the uClibc shared library for %{name}.
 Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
+%if %{with uclibc}
+Requires:	uclibc-%{libname} = %{EVRD}
+%endif
 Provides:	tirpc-devel = %{EVRD}
 Conflicts:	glibc < 6:2.17-1.22064.3
 
