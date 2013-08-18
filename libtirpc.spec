@@ -16,7 +16,7 @@ License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	8
+Release:	9
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
@@ -37,8 +37,7 @@ Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
-Patch8:		tirpc-xdr-update-from-glibc.patch
-Patch9:		segfault_fix.patch
+Patch8:		segfault_fix.patch
 BuildRequires:	libtool
 %if %{with gss}
 BuildRequires:	pkgconfig(libgssglue)
