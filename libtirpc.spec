@@ -184,6 +184,7 @@ mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
 rm %{buildroot}/%{_lib}/libtirpc.so
 ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
 
+rm %{buildroot}%{_includedir}/rpcsvc/{rquota,mount,nfs_prot}.h
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
