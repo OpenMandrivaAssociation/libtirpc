@@ -1,7 +1,7 @@
---- libtirpc-0.2.3/src/Makefile.am.0008~	2013-08-12 23:43:23.637719814 +0200
-+++ libtirpc-0.2.3/src/Makefile.am	2013-08-12 23:44:12.723374912 +0200
+--- libtirpc-0.2.3/src/Makefile.am.0008~	2013-08-27 12:30:49.665416080 +0200
++++ libtirpc-0.2.3/src/Makefile.am	2013-08-27 12:31:38.927283406 +0200
 @@ -53,7 +53,8 @@ libtirpc_la_SOURCES = auth_none.c auth_u
-         auth_time.c auth_des.c authdes_prot.c
+         auth_time.c auth_des.c authdes_prot.c des_crypt.c key_call.c key_prot_xdr.c netname.c getpublickey.c rpcdname.c des_impl.c
  
  ## XDR
 -libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
@@ -10,8 +10,8 @@
  
  ## Secure-RPC
  if GSS
---- libtirpc-0.2.3/src/xdr_intXX_t.c.0008~	2013-08-12 23:43:23.638719827 +0200
-+++ libtirpc-0.2.3/src/xdr_intXX_t.c	2013-08-12 23:43:23.638719827 +0200
+--- libtirpc-0.2.3/src/xdr_intXX_t.c.0008~	2013-08-27 12:30:49.667416116 +0200
++++ libtirpc-0.2.3/src/xdr_intXX_t.c	2013-08-27 12:30:49.666416098 +0200
 @@ -0,0 +1,230 @@
 +/* Copyright (c) 1998, 1999, 2000, 2004, 2005 Free Software Foundation, Inc.
 +   This file is part of the GNU C Library.
@@ -244,7 +244,7 @@
 +}
 +/*libc_hidden_nolink_sunrpc (xdr_uint8_t, GLIBC_2_1)*/
 --- libtirpc-0.2.3/tirpc/rpc/pmap_clnt.h.0008~	2013-02-13 16:13:59.000000000 +0100
-+++ libtirpc-0.2.3/tirpc/rpc/pmap_clnt.h	2013-08-12 23:43:23.639719840 +0200
++++ libtirpc-0.2.3/tirpc/rpc/pmap_clnt.h	2013-08-27 12:30:49.667416116 +0200
 @@ -64,6 +64,9 @@
  #ifndef _RPC_PMAP_CLNT_H_
  #define _RPC_PMAP_CLNT_H_
@@ -256,7 +256,7 @@
  __BEGIN_DECLS
  extern bool_t		pmap_set(u_long, u_long, int, int);
 --- libtirpc-0.2.3/tirpc/rpc/xdr.h.0008~	2013-02-13 16:13:59.000000000 +0100
-+++ libtirpc-0.2.3/tirpc/rpc/xdr.h	2013-08-12 23:43:23.641719867 +0200
++++ libtirpc-0.2.3/tirpc/rpc/xdr.h	2013-08-27 12:30:49.668416133 +0200
 @@ -1,51 +1,50 @@
 -/*	$NetBSD: xdr.h,v 1.19 2000/07/17 05:00:45 matt Exp $	*/
 -

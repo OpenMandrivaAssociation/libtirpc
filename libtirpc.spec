@@ -9,7 +9,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.2.3
-Release:	5
+Release:	10
 License:	SISSL and BSD
 Group:		System/Libraries
 URL:		http://sourceforge.net/projects/libtirpc
@@ -28,7 +28,7 @@ Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
 # disabled as it breaks nfs etc.
-#Patch8:		tirpc-xdr-update-from-glibc.patch
+#Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch9:		libtirpc-0.2.4-rc2.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch11:	libtirpc-0009-Automatically-generate-XDR-header-files-from-.x-sour.patch
@@ -86,6 +86,9 @@ This package contains the uClibc shared library for %{name}.
 Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
+%if %{with uclibc}
+Requires:	uclibc-%{libname} = %{EVRD}
+%endif
 Provides:	tirpc-devel = %{EVRD}
 Conflicts:	glibc < 6:2.17-1.22064.3
 
