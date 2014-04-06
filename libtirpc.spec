@@ -131,9 +131,9 @@ pushd uclibc
 --enable-shared \
 --enable-static \
 %if %{with gss}
---enable-gssapi
+--enable-gss
 %else
---disable-gssapi
+--disable-gss
 %endif
 
 %make all
@@ -147,9 +147,9 @@ pushd system
 	--enable-shared \
 	--enable-static \
 %if %{with gss}
-	--enable-gssapi
+	--enable-gss
 %else
-	--disable-gssapi
+	--disable-gss
 %endif
 
 %make all
