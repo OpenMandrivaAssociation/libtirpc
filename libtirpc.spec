@@ -11,12 +11,12 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.2.3
+Version:	0.2.4
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	10
+Release:	1
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
@@ -32,12 +32,11 @@ Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
 Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
-Patch1:		libtirpc-0.2.2-automake-1.13.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
-Patch8:		segfault_fix.patch
+Patch8:		libtirpc-0.2.4-sizeof.patch
 BuildRequires:	libtool
 %if %{with gss}
 BuildRequires:	pkgconfig(libgssglue)
@@ -131,9 +130,9 @@ pushd uclibc
 --enable-shared \
 --enable-static \
 %if %{with gss}
---enable-gss
+--enable-gssapi
 %else
---disable-gss
+--disable-gssapi
 %endif
 
 %make all
@@ -147,9 +146,9 @@ pushd system
 	--enable-shared \
 	--enable-static \
 %if %{with gss}
-	--enable-gss
+	--enable-gssapi
 %else
-	--disable-gss
+	--disable-gssapi
 %endif
 
 %make all
@@ -162,7 +161,7 @@ popd
 
 %makeinstall_std -C system
 install -m 755 -d %{buildroot}%{_sysconfdir}
-install -m 644 doc/etc_netconfig %{buildroot}%{_sysconfdir}/netconfig
+install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
 install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
 install -m644 %{SOURCE15} %{SOURCE16} %{buildroot}%{_includedir}/tirpc/rpc/
 

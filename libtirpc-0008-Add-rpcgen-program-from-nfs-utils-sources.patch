@@ -18,14 +18,6 @@
 +AC_SUBST(CC_FOR_BUILD)
 +AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile rpcgen/Makefile])
  AC_OUTPUT(libtirpc.pc)
---- libtirpc-0.2.3/Makefile.am.0005~	2012-04-26 21:54:02.000000000 +0200
-+++ libtirpc-0.2.3/Makefile.am	2013-02-11 21:47:03.990289233 +0100
-@@ -1,4 +1,4 @@
--SUBDIRS = src man doc
-+SUBDIRS = src man doc rpcgen
- ACLOCAL_AMFLAGS = -I m4
- 
- nobase_include_HEADERS = tirpc/netconfig.h \
 --- libtirpc-0.2.3/rpcgen/Makefile.am.0005~	2013-02-11 21:47:03.990289233 +0100
 +++ libtirpc-0.2.3/rpcgen/Makefile.am	2013-02-11 21:49:37.233184084 +0100
 @@ -0,0 +1,24 @@
@@ -6406,3 +6398,11 @@
 +int		write_sample_clnt(definition *);
 +void		write_sample_clnt_main(void);
 +void		add_sample_msg(void);
+--- libtirpc-0.2.4/Makefile.am.0005~	2014-04-06 22:38:51.686517234 +0100
++++ libtirpc-0.2.4/Makefile.am	2014-04-06 22:40:41.691521686 +0100
+@@ -1,4 +1,4 @@
+-SUBDIRS = src man doc
++SUBDIRS = src man doc rpcgen
+ ACLOCAL_AMFLAGS = -I m4
+ 
+ noinst_HEADERS	       = tirpc/reentrant.h \
