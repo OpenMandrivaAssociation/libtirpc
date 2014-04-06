@@ -1,0 +1,20 @@
+--- libtirpc-0.2.4/tirpc/rpc/xdr.h.orig	2014-04-06 23:03:16.268384812 +0100
++++ libtirpc-0.2.4/tirpc/rpc/xdr.h	2014-04-06 23:04:09.720386975 +0100
+@@ -371,4 +371,6 @@
+ extern u_int xdrrec_readbytes(XDR *, caddr_t, u_int);
+ __END_DECLS
+ 
++extern u_long xdr_sizeof(xdrproc_t, void *); 
++
+ #endif /* !_TIRPC_XDR_H */
+--- libtirpc-0.2.4/src/Makefile.orig	2014-04-06 22:51:36.476548183 +0100
++++ libtirpc-0.2.4/src/Makefile.am	2014-04-06 23:05:57.302391328 +0100
+@@ -54,7 +54,7 @@
+         auth_time.c auth_des.c authdes_prot.c des_crypt.c key_call.c key_prot_xdr.c netname.c getpublickey.c rpcdname.c des_impl.c
+ 
+ ## XDR
+-libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c
++libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c xdr_sizeof.c
+ 
+ ## Secure-RPC
+ if GSS

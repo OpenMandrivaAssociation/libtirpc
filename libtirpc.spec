@@ -36,6 +36,7 @@ Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
+Patch8:		libtirpc-0.2.4-sizeof.patch
 BuildRequires:	libtool
 %if %{with gss}
 BuildRequires:	pkgconfig(libgssglue)
