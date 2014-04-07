@@ -39,11 +39,9 @@ Patch7:		rpcgen-compile.patch
 Patch8:		libtirpc-0.2.4-sizeof.patch
 BuildRequires:	libtool
 %if %{with gss}
-BuildRequires:	pkgconfig(libgssglue)
 BuildRequires:	krb5-devel
 %else
 BuildConflicts:	krb5-devel
-BuildConflicts:	pkgconfig(libgssglue)
 BuildConflicts: uclibc-%{libname}
 %endif
 %if %{with uclibc}
@@ -129,11 +127,7 @@ pushd uclibc
 %uclibc_configure \
 --enable-shared \
 --enable-static \
-%if %{with gss}
---enable-gssapi
-%else
 --disable-gssapi
-%endif
 
 %make all
 popd
