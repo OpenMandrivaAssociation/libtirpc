@@ -16,7 +16,7 @@ License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 %if "%{beta}" == ""
-Release:	1
+Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 %else
 Release:	0.%{beta}.1
