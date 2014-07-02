@@ -1,25 +1,16 @@
---- libtirpc-0.2.4/Makefile.am.0011~	2014-07-02 18:22:10.743652271 +0200
-+++ libtirpc-0.2.4/Makefile.am	2014-07-02 18:59:59.062151416 +0200
-@@ -1,6 +1,11 @@
+--- libtirpc-0.2.4/Makefile.am.0011~	2014-07-02 19:14:00.986996853 +0200
++++ libtirpc-0.2.4/Makefile.am	2014-07-02 19:14:43.697412094 +0200
+@@ -1,6 +1,10 @@
  SUBDIRS = src man doc rpcgen
  ACLOCAL_AMFLAGS = -I m4
  
 +
 +GENFILES = \
-+			 tirpc/rpcsvc/crypt.h \
 +			 tirpc/rpc/rpcb_prot.h
 +
  noinst_HEADERS	       = tirpc/reentrant.h \
  			 tirpc/getpeereid.h \
  			 tirpc/libc_private.h \
-@@ -8,7 +13,6 @@ noinst_HEADERS	       = tirpc/reentrant.
- 
- nobase_include_HEADERS = tirpc/netconfig.h \
- 			 tirpc/rpcsvc/crypt.x \
--			 tirpc/rpcsvc/crypt.h \
- 			 tirpc/rpc/xdr.h \
- 			 tirpc/rpc/types.h \
- 			 tirpc/rpc/svc_soc.h \
 @@ -20,7 +24,6 @@ nobase_include_HEADERS = tirpc/netconfig
  			 tirpc/rpc/rpcent.h \
  			 tirpc/rpc/rpc_com.h \
@@ -51,8 +42,8 @@
 +
 +CLEANFILES	       = $(GENFILES) |cscope.* *~
  DISTCLEANFILES	       = Makefile.in libtirpc*.tar.gz
---- libtirpc-0.2.4/src/Makefile.am.0011~	2014-07-02 18:22:10.773652560 +0200
-+++ libtirpc-0.2.4/src/Makefile.am	2014-07-02 19:00:26.232415035 +0200
+--- libtirpc-0.2.4/src/Makefile.am.0011~	2014-07-02 19:14:01.016997145 +0200
++++ libtirpc-0.2.4/src/Makefile.am	2014-07-02 19:14:01.020330511 +0200
 @@ -8,7 +8,7 @@
  noinst_HEADERS = rpc_com.h
  

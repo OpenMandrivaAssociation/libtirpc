@@ -11,7 +11,7 @@ Version:	0.2.4
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
-Release:	2
+Release:	3
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 # Related headers that were removed from glibc
 Source10:	nis.h
@@ -30,8 +30,8 @@ Patch8:		libtirpc-0.2.4-sizeof.patch
 # disabled as it breaks nfs etc.
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
-Patch11:	libtirpc-0009-Automatically-generate-XDR-header-files-from-.x-sour.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
+Patch13:	libtirpc-0.2.5-rc3.patch
 
 BuildRequires:	libtool
 %if %{with gss}
@@ -142,8 +142,6 @@ mv %{buildroot}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
 mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
 rm %{buildroot}/%{_lib}/libtirpc.so
 ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
-
-rm %{buildroot}%{_includedir}/rpcsvc/{rquota,mount,nfs_prot}.h
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig

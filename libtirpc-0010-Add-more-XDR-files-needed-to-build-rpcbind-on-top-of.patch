@@ -1,27 +1,37 @@
---- libtirpc-0.2.4/Makefile.am.0012~	2014-07-02 19:00:58.349393336 +0200
-+++ libtirpc-0.2.4/Makefile.am	2014-07-02 19:03:14.580715451 +0200
-@@ -4,6 +4,9 @@ ACLOCAL_AMFLAGS = -I m4
+--- libtirpc-0.2.4/Makefile.am.0012~	2014-07-02 19:20:10.277254162 +0200
++++ libtirpc-0.2.4/Makefile.am	2014-07-02 19:21:13.207866111 +0200
+@@ -1,6 +1,12 @@
+ SUBDIRS = src man doc rpcgen
+ ACLOCAL_AMFLAGS = -I m4
  
- GENFILES = \
- 			 tirpc/rpcsvc/crypt.h \
++
++GENFILES = \
 +			 tirpc/rpcsvc/mount.h \
 +			 tirpc/rpcsvc/nfs_prot.h \
-+			 tirpc/rpcsvc/rquota.h \
- 			 tirpc/rpc/rpcb_prot.h
- 
++			 tirpc/rpcsvc/rquota.h
++
  noinst_HEADERS	       = tirpc/reentrant.h \
-@@ -13,6 +16,9 @@ noinst_HEADERS	       = tirpc/reentrant.
- 
+ 			 tirpc/getpeereid.h \
+ 			 tirpc/libc_private.h \
+@@ -9,6 +15,9 @@ noinst_HEADERS	       = tirpc/reentrant.
  nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpcsvc/crypt.x \
+ 			 tirpc/rpcsvc/crypt.h \
 +			 tirpc/rpcsvc/mount.x \
 +			 tirpc/rpcsvc/nfs_prot.x \
 +			 tirpc/rpcsvc/rquota.x \
  			 tirpc/rpc/xdr.h \
  			 tirpc/rpc/types.h \
  			 tirpc/rpc/svc_soc.h \
---- libtirpc-0.2.4/tirpc/rpcsvc/mount.x.0012~	2014-07-02 19:00:58.349393336 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/mount.x	2014-07-02 19:00:58.349393336 +0200
+@@ -41,5 +50,5 @@ nobase_include_HEADERS = tirpc/netconfig
+ pkgconfigdir=$(libdir)/pkgconfig
+ pkgconfig_DATA = libtirpc.pc
+ 
+-CLEANFILES	       = cscope.* *~
++CLEANFILES	       = $(GENFILES) cscope.* *~
+ DISTCLEANFILES	       = Makefile.in libtirpc*.tar.gz
+--- libtirpc-0.2.4/tirpc/rpcsvc/mount.x.0012~	2014-07-02 19:20:10.303921088 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/mount.x	2014-07-02 19:20:10.303921088 +0200
 @@ -0,0 +1,257 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -280,8 +290,8 @@
 +	} = 3;
 +#endif
 +} = 100005;
---- libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x.0012~	2014-07-02 19:00:58.349393336 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x	2014-07-02 19:00:58.349393336 +0200
+--- libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x.0012~	2014-07-02 19:20:10.303921088 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x	2014-07-02 19:20:10.303921088 +0200
 @@ -0,0 +1,1266 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -1549,8 +1559,8 @@
 +} = 100003;
 +#endif
 +
---- libtirpc-0.2.4/tirpc/rpcsvc/rquota.x.0012~	2014-07-02 19:00:58.349393336 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/rquota.x	2014-07-02 19:00:58.349393336 +0200
+--- libtirpc-0.2.4/tirpc/rpcsvc/rquota.x.0012~	2014-07-02 19:20:10.303921088 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/rquota.x	2014-07-02 19:20:10.303921088 +0200
 @@ -0,0 +1,67 @@
 +/*
 + * Remote quota protocol
