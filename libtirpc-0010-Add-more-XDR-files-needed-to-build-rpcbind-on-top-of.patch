@@ -1,25 +1,6 @@
-From 52aecb645b2e45d120a941f42fdbe193e22c27e1 Mon Sep 17 00:00:00 2001
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Sat, 10 Nov 2012 17:45:03 +0100
-Subject: [PATCH] Add more XDR files needed to build rpcbind on top of
- libtirpc
-
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
----
- Makefile.am             |    6 +
- tirpc/rpcsvc/mount.x    |  257 ++++++++++
- tirpc/rpcsvc/nfs_prot.x | 1266 +++++++++++++++++++++++++++++++++++++++++++++++
- tirpc/rpcsvc/rquota.x   |   67 +++
- 4 files changed, 1596 insertions(+)
- create mode 100644 tirpc/rpcsvc/mount.x
- create mode 100644 tirpc/rpcsvc/nfs_prot.x
- create mode 100644 tirpc/rpcsvc/rquota.x
-
-diff --git a/Makefile.am b/Makefile.am
-index 7e63f78..351c5df 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -3,10 +3,16 @@ ACLOCAL_AMFLAGS = -I m4
+--- libtirpc-0.2.4/Makefile.am.0012~	2014-07-02 19:00:58.349393336 +0200
++++ libtirpc-0.2.4/Makefile.am	2014-07-02 19:03:14.580715451 +0200
+@@ -4,6 +4,9 @@ ACLOCAL_AMFLAGS = -I m4
  
  GENFILES = \
  			 tirpc/rpcsvc/crypt.h \
@@ -27,6 +8,9 @@ index 7e63f78..351c5df 100644
 +			 tirpc/rpcsvc/nfs_prot.h \
 +			 tirpc/rpcsvc/rquota.h \
  			 tirpc/rpc/rpcb_prot.h
+ 
+ noinst_HEADERS	       = tirpc/reentrant.h \
+@@ -13,6 +16,9 @@ noinst_HEADERS	       = tirpc/reentrant.
  
  nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpcsvc/crypt.x \
@@ -36,11 +20,8 @@ index 7e63f78..351c5df 100644
  			 tirpc/rpc/xdr.h \
  			 tirpc/rpc/types.h \
  			 tirpc/rpc/svc_soc.h \
-diff --git a/tirpc/rpcsvc/mount.x b/tirpc/rpcsvc/mount.x
-new file mode 100644
-index 0000000..f68a06f
---- /dev/null
-+++ b/tirpc/rpcsvc/mount.x
+--- libtirpc-0.2.4/tirpc/rpcsvc/mount.x.0012~	2014-07-02 19:00:58.349393336 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/mount.x	2014-07-02 19:00:58.349393336 +0200
 @@ -0,0 +1,257 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -299,11 +280,8 @@ index 0000000..f68a06f
 +	} = 3;
 +#endif
 +} = 100005;
-diff --git a/tirpc/rpcsvc/nfs_prot.x b/tirpc/rpcsvc/nfs_prot.x
-new file mode 100644
-index 0000000..01564f8
---- /dev/null
-+++ b/tirpc/rpcsvc/nfs_prot.x
+--- libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x.0012~	2014-07-02 19:00:58.349393336 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x	2014-07-02 19:00:58.349393336 +0200
 @@ -0,0 +1,1266 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -1571,11 +1549,8 @@ index 0000000..01564f8
 +} = 100003;
 +#endif
 +
-diff --git a/tirpc/rpcsvc/rquota.x b/tirpc/rpcsvc/rquota.x
-new file mode 100644
-index 0000000..72864d1
---- /dev/null
-+++ b/tirpc/rpcsvc/rquota.x
+--- libtirpc-0.2.4/tirpc/rpcsvc/rquota.x.0012~	2014-07-02 19:00:58.349393336 +0200
++++ libtirpc-0.2.4/tirpc/rpcsvc/rquota.x	2014-07-02 19:00:58.349393336 +0200
 @@ -0,0 +1,67 @@
 +/*
 + * Remote quota protocol
@@ -1644,6 +1619,3 @@ index 0000000..72864d1
 +		RQUOTAPROC_GETACTIVEQUOTA(getquota_args) = 2;
 +	} = 1;
 +} = 100011;
--- 
-1.7.9.5
-
