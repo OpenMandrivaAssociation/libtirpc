@@ -33,7 +33,6 @@ Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patc
 Patch11:	libtirpc-0009-Automatically-generate-XDR-header-files-from-.x-sour.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
 
-
 BuildRequires:	libtool
 %if %{with gss}
 BuildRequires:	krb5-devel
@@ -98,7 +97,7 @@ This package contains a static library version of the libtirpc library.
 %prep
 %setup -q
 %apply_patches
-autoreconf -fi
+autoreconf -fiv
 
 install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/rpcsvc/
 install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
@@ -107,10 +106,7 @@ install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
 CONFIGURE_TOP="$PWD"
 export CFLAGS="%{optflags} -fPIC"
 
-mkdir -p system
-pushd system
-
-%configure2_5x	\
+%configure	\
 	--libdir=/%{_lib} \
 	--enable-shared \
 	--enable-static \
@@ -121,10 +117,9 @@ pushd system
 %endif
 
 %make all
-popd
 
 %install
-%makeinstall_std -C system
+%makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
 install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
