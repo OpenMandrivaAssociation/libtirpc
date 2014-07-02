@@ -1,13 +1,10 @@
-%define _disable_ld_no_undefined 1
+%define major	1
+%define libname	%mklibname tirpc %{major}
+%define devname	%mklibname tirpc -d
+%define static	%mklibname -d -s tirpc
 
-%define major 1
-%define libname %mklibname tirpc %{major}
-%define devname %mklibname tirpc -d
-%define static %mklibname -d -s tirpc
-%define beta %nil
-
-%bcond_without uclibc
-%bcond_without gss
+%bcond_with	uclibc
+%bcond_without	gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
@@ -15,14 +12,8 @@ Version:	0.2.4
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
-%if "%{beta}" == ""
 Release:	2
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
-%else
-Release:	0.%{beta}.1
-# Packaged from git://git.infradead.org/~steved/libtirpc.git w/ git archive
-Source0:	%{name}-%{version}-%{beta}.tar.xz
-%endif
 # Related headers that were removed from glibc
 Source10:	nis.h
 Source11:	nis_tags.h
@@ -37,12 +28,26 @@ Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
 Patch8:		libtirpc-0.2.4-sizeof.patch
+# disabled as it breaks nfs etc.
+#Patch8:	tirpc-xdr-update-from-glibc.patch
+Patch9:		libtirpc-0.2.4-rc2.patch
+Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
+Patch11:	libtirpc-0009-Automatically-generate-XDR-header-files-from-.x-sour.patch
+Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
+
+
 BuildRequires:	libtool
 %if %{with gss}
 BuildRequires:	krb5-devel
 %else
 BuildConflicts:	krb5-devel
 BuildConflicts: uclibc-%{libname}
+BuildRequires:	pkgconfig
+BuildRequires:	autoconf
+BuildRequires:	automake
+buildRequires:	libtool
+%if %{with gss}
+BuildRequires:	krb5-devel
 %endif
 %if %{with uclibc}
 BuildRequires: uClibc-devel >= 0.9.33.2-15
@@ -125,9 +130,17 @@ mkdir -p uclibc
 pushd uclibc
 
 %uclibc_configure \
---enable-shared \
---enable-static \
---disable-gssapi
+		--enable-shared \
+		--enable-static \
+		--disable-gssapi
+		--libdir=%{uclibc_root}/%{_lib} \
+		--enable-shared \
+		--enable-static \
+%if %{with gss}
+		--enable-gss
+%else
+		--disable-gss
+%endif
 
 %make all
 popd
@@ -137,6 +150,7 @@ mkdir -p system
 pushd system
 
 %configure2_5x	\
+	--libdir=/%{_lib} \
 	--enable-shared \
 	--enable-static \
 %if %{with gss}
@@ -151,6 +165,10 @@ popd
 %install
 %if %{with uclibc}
 %makeinstall_std -C uclibc
+install -d %{buildroot}%{uclibc_root}%{_libdir}
+mv %{buildroot}%{uclibc_root}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
+rm %{buildroot}%{uclibc_root}/%{_lib}/libtirpc.so
+ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
 %endif
 
 %makeinstall_std -C system
@@ -171,15 +189,23 @@ done
 cd %{buildroot}%{_includedir}
 ln -s tirpc/netconfig.h .
 
+install -d %{buildroot}%{_libdir}
+mv %{buildroot}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
+mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
+rm %{buildroot}/%{_lib}/libtirpc.so
+ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
+
+rm %{buildroot}%{_includedir}/rpcsvc/{rquota,mount,nfs_prot}.h
+
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
 
 %files -n %{libname}
-%{_libdir}/libtirpc.so.%{major}*
+/%{_lib}/libtirpc.so.%{major}*
 
 %if %{with uclibc}
 %files -n uclibc-%{libname}
-%{uclibc_root}%{_libdir}/libtirpc.so.%{major}*
+%{uclibc_root}/%{_lib}/libtirpc.so.%{major}*
 %endif
 
 %files -n %{devname}
