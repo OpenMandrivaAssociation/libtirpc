@@ -10,7 +10,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
 diff -Naur libtirpc-0.3.0/tirpc/rpc/rpcent.h libtirpc-0.3.0.tpg/tirpc/rpc/rpcent.h
 --- libtirpc-0.3.0/tirpc/rpc/rpcent.h	2015-05-06 14:05:22.000000000 +0000
-+++ libtirpc-0.3.0.tpg/tirpc/rpc/rpcent.h	2015-05-12 19:45:35.533968930 +0000
++++ libtirpc-0.3.0.tpg/tirpc/rpc/rpcent.h	2015-05-12 21:29:54.625462520 +0000
 @@ -48,8 +48,9 @@
  extern "C" {
  #endif
@@ -23,3 +23,15 @@ diff -Naur libtirpc-0.3.0/tirpc/rpc/rpcent.h libtirpc-0.3.0.tpg/tirpc/rpc/rpcent
  struct rpcent {
  	char	*r_name;	/* name of server for this rpc program */
  	char	**r_aliases;	/* alias list */
+@@ -60,10 +61,10 @@
+ extern struct rpcent *getrpcbyname(const char *);
+ extern struct rpcent *getrpcbynumber(int);
+ extern struct rpcent *getrpcent(void);
+-#endif
+ 
+ extern void setrpcent(int);
+ extern void endrpcent(void);
++#endif
+ #ifdef __cplusplus
+ }
+ #endif
