@@ -8,22 +8,18 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  tirpc/rpc/rpcent.h |    5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tirpc/rpc/rpcent.h b/tirpc/rpc/rpcent.h
-index 7fd93d9..8ce05ed 100644
---- a/tirpc/rpc/rpcent.h
-+++ b/tirpc/rpc/rpcent.h
-@@ -46,8 +46,9 @@
- 
- __BEGIN_DECLS
+diff -Naur libtirpc-0.3.0/tirpc/rpc/rpcent.h libtirpc-0.3.0.tpg/tirpc/rpc/rpcent.h
+--- libtirpc-0.3.0/tirpc/rpc/rpcent.h	2015-05-06 14:05:22.000000000 +0000
++++ libtirpc-0.3.0.tpg/tirpc/rpc/rpcent.h	2015-05-12 19:45:35.533968930 +0000
+@@ -48,8 +48,9 @@
+ extern "C" {
+ #endif
  
 -/* These are defined in /usr/include/rpc/netdb.h */
--#if 0
+-#if !defined(__GLIBC__)
 +/* These are defined in /usr/include/rpc/netdb.h, unless we are using
 +   the C library without RPC support. */
 +#if defined(__UCLIBC__) && !defined(__UCLIBC_HAS_RPC__)
  struct rpcent {
  	char	*r_name;	/* name of server for this rpc program */
  	char	**r_aliases;	/* alias list */
--- 
-1.7.9.5
-

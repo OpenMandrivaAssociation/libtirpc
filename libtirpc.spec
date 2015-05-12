@@ -21,17 +21,15 @@ Source13:	yp_prot.h
 Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
-Patch0:		libtirpc-0.2.3-add-missing-bits-from-glibc.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
-Patch8:		libtirpc-0.2.4-sizeof.patch
+Patch8:		libtirpc-0.3.0-sizeof.patch
 # disabled as it breaks nfs etc.
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
-Patch13:	libtirpc-0.2.5-rc3.patch
 
 BuildRequires:	libtool
 %if %{with gss}
@@ -42,10 +40,6 @@ BuildConflicts:	krb5-devel
 BuildRequires:	pkgconfig
 BuildRequires:	autoconf
 BuildRequires:	automake
-buildRequires:	libtool
-%if %{with gss}
-BuildRequires:	krb5-devel
-%endif
 
 %track
 prog %{name} = {
