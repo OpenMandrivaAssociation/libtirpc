@@ -7,8 +7,8 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.3.0
-Release:	2
+Version:	0.3.1
+Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
