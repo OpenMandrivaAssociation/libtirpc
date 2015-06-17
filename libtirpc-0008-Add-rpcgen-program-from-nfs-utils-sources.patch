@@ -1,16 +1,16 @@
-diff -Naur libtirpc-0.3.0/Makefile.am libtirpc-0.3.0.tpg/Makefile.am
---- libtirpc-0.3.0/Makefile.am	2015-05-06 14:05:22.000000000 +0000
-+++ libtirpc-0.3.0.tpg/Makefile.am	2015-05-12 19:17:21.887289088 +0000
+diff -Naur libtirpc-0.3.2/Makefile.am libtirpc-0.3.2.tpg/Makefile.am
+--- libtirpc-0.3.2/Makefile.am	2015-06-16 15:35:08.000000000 +0000
++++ libtirpc-0.3.2.tpg/Makefile.am	2015-06-17 17:51:53.486954485 +0000
 @@ -1,4 +1,4 @@
 -SUBDIRS = src man doc
 +SUBDIRS = src man doc rpcgen
  ACLOCAL_AMFLAGS = -I m4
  
  noinst_HEADERS	       = tirpc/reentrant.h \
-diff -Naur libtirpc-0.3.0/configure.ac libtirpc-0.3.0.tpg/configure.ac
---- libtirpc-0.3.0/configure.ac	2015-05-06 14:05:22.000000000 +0000
-+++ libtirpc-0.3.0.tpg/configure.ac	2015-05-12 19:24:15.659469481 +0000
-@@ -49,6 +49,16 @@
+diff -Naur libtirpc-0.3.2/configure.ac libtirpc-0.3.2.tpg/configure.ac
+--- libtirpc-0.3.2/configure.ac	2015-06-16 15:35:08.000000000 +0000
++++ libtirpc-0.3.2.tpg/configure.ac	2015-06-17 17:51:53.487954512 +0000
+@@ -47,7 +47,17 @@
  AC_CHECK_LIB([pthread], [pthread_create])
  AC_CHECK_FUNCS([getrpcbyname getrpcbynumber setrpcent endrpcent getrpcent])
  
@@ -28,9 +28,10 @@ diff -Naur libtirpc-0.3.0/configure.ac libtirpc-0.3.0.tpg/configure.ac
 +AC_CONFIG_FILES([Makefile src/Makefile man/Makefile doc/Makefile rpcgen/Makefile])
  AC_OUTPUT(libtirpc.pc)
  
-diff -Naur libtirpc-0.3.0/rpcgen/Makefile.am libtirpc-0.3.0.tpg/rpcgen/Makefile.am
---- libtirpc-0.3.0/rpcgen/Makefile.am	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/Makefile.am	2015-05-12 19:20:38.826608260 +0000
+ 
+diff -Naur libtirpc-0.3.2/rpcgen/Makefile.am libtirpc-0.3.2.tpg/rpcgen/Makefile.am
+--- libtirpc-0.3.2/rpcgen/Makefile.am	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/Makefile.am	2015-06-17 17:51:53.487954512 +0000
 @@ -0,0 +1,24 @@
 +INCLUDES = -I$(top_srcdir)/tirpc -DPORTMAP -DINET6 -DVERSION="\"$(VERSION)\"" \
 +		-D_GNU_SOURCE -Wall -pipe  
@@ -56,9 +57,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/Makefile.am libtirpc-0.3.0.tpg/rpcgen/Makefile.
 +	rpc_util.h
 +
 +dist_man1_MANS = rpcgen.1
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_clntout.c libtirpc-0.3.0.tpg/rpcgen/rpc_clntout.c
---- libtirpc-0.3.0/rpcgen/rpc_clntout.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_clntout.c	2015-05-12 19:20:38.827608287 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_clntout.c libtirpc-0.3.2.tpg/rpcgen/rpc_clntout.c
+--- libtirpc-0.3.2/rpcgen/rpc_clntout.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_clntout.c	2015-06-17 17:51:53.487954512 +0000
 @@ -0,0 +1,217 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -277,9 +278,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_clntout.c libtirpc-0.3.0.tpg/rpcgen/rpc_cln
 +		f_print(fout, "\treturn (%s%s);\n", ampr(proc->res_type), RESULT);
 +	}
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_cout.c libtirpc-0.3.0.tpg/rpcgen/rpc_cout.c
---- libtirpc-0.3.0/rpcgen/rpc_cout.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_cout.c	2015-05-12 19:20:38.829608341 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_cout.c libtirpc-0.3.2.tpg/rpcgen/rpc_cout.c
+--- libtirpc-0.3.2/rpcgen/rpc_cout.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_cout.c	2015-06-17 17:51:53.487954512 +0000
 @@ -0,0 +1,706 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -987,9 +988,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_cout.c libtirpc-0.3.0.tpg/rpcgen/rpc_cout.c
 +	return (hptr);
 +
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_hout.c libtirpc-0.3.0.tpg/rpcgen/rpc_hout.c
---- libtirpc-0.3.0/rpcgen/rpc_hout.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_hout.c	2015-05-12 19:20:38.831608395 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_hout.c libtirpc-0.3.2.tpg/rpcgen/rpc_hout.c
+--- libtirpc-0.3.2/rpcgen/rpc_hout.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_hout.c	2015-06-17 17:51:53.488954539 +0000
 @@ -0,0 +1,490 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -1481,9 +1482,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_hout.c libtirpc-0.3.0.tpg/rpcgen/rpc_hout.c
 +	}
 +	return (1);
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_main.c libtirpc-0.3.0.tpg/rpcgen/rpc_main.c
---- libtirpc-0.3.0/rpcgen/rpc_main.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_main.c	2015-05-12 19:20:38.833608449 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_main.c libtirpc-0.3.2.tpg/rpcgen/rpc_main.c
+--- libtirpc-0.3.2/rpcgen/rpc_main.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_main.c	2015-06-17 17:51:53.488954539 +0000
 @@ -0,0 +1,1067 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -2552,9 +2553,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_main.c libtirpc-0.3.0.tpg/rpcgen/rpc_main.c
 +
 +	exit(1);
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_output.h libtirpc-0.3.0.tpg/rpcgen/rpc_output.h
---- libtirpc-0.3.0/rpcgen/rpc_output.h	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_output.h	2015-05-12 19:20:38.834608476 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_output.h libtirpc-0.3.2.tpg/rpcgen/rpc_output.h
+--- libtirpc-0.3.2/rpcgen/rpc_output.h	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_output.h	2015-06-17 17:51:53.488954539 +0000
 @@ -0,0 +1,16 @@
 +/*
 + * rpc_output.h
@@ -2572,9 +2573,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_output.h libtirpc-0.3.0.tpg/rpcgen/rpc_outp
 +void	pdeclaration(char *, declaration *, int, char *);
 +
 +#endif /* RPCGEN_NEW_OUTPUT_H */
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_parse.c libtirpc-0.3.0.tpg/rpcgen/rpc_parse.c
---- libtirpc-0.3.0/rpcgen/rpc_parse.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_parse.c	2015-05-12 19:20:38.835608503 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_parse.c libtirpc-0.3.2.tpg/rpcgen/rpc_parse.c
+--- libtirpc-0.3.2/rpcgen/rpc_parse.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_parse.c	2015-06-17 17:51:53.489954566 +0000
 @@ -0,0 +1,609 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -3185,9 +3186,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_parse.c libtirpc-0.3.0.tpg/rpcgen/rpc_parse
 +		break;
 +	}
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_parse.h libtirpc-0.3.0.tpg/rpcgen/rpc_parse.h
---- libtirpc-0.3.0/rpcgen/rpc_parse.h	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_parse.h	2015-05-12 19:20:38.837608557 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_parse.h libtirpc-0.3.2.tpg/rpcgen/rpc_parse.h
+--- libtirpc-0.3.2/rpcgen/rpc_parse.h	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_parse.h	2015-06-17 17:51:53.489954566 +0000
 @@ -0,0 +1,166 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -3355,9 +3356,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_parse.h libtirpc-0.3.0.tpg/rpcgen/rpc_parse
 +};
 +
 +typedef struct bas_type bas_type;
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_sample.c libtirpc-0.3.0.tpg/rpcgen/rpc_sample.c
---- libtirpc-0.3.0/rpcgen/rpc_sample.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_sample.c	2015-05-12 19:20:38.838608584 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_sample.c libtirpc-0.3.2.tpg/rpcgen/rpc_sample.c
+--- libtirpc-0.3.2/rpcgen/rpc_sample.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_sample.c	2015-06-17 17:51:53.489954566 +0000
 @@ -0,0 +1,247 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -3606,9 +3607,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_sample.c libtirpc-0.3.0.tpg/rpcgen/rpc_samp
 +		}
 +  f_print(fout, "}\n");
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_scan.c libtirpc-0.3.0.tpg/rpcgen/rpc_scan.c
---- libtirpc-0.3.0/rpcgen/rpc_scan.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_scan.c	2015-05-12 19:20:38.839608611 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_scan.c libtirpc-0.3.2.tpg/rpcgen/rpc_scan.c
+--- libtirpc-0.3.2/rpcgen/rpc_scan.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_scan.c	2015-06-17 17:51:53.489954566 +0000
 @@ -0,0 +1,474 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -4084,9 +4085,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_scan.c libtirpc-0.3.0.tpg/rpcgen/rpc_scan.c
 +	}
 +	*lineno = num - 1;
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_scan.h libtirpc-0.3.0.tpg/rpcgen/rpc_scan.h
---- libtirpc-0.3.0/rpcgen/rpc_scan.h	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_scan.h	2015-05-12 19:20:38.840608638 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_scan.h libtirpc-0.3.2.tpg/rpcgen/rpc_scan.h
+--- libtirpc-0.3.2/rpcgen/rpc_scan.h	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_scan.h	2015-06-17 17:51:53.490954593 +0000
 @@ -0,0 +1,103 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -4191,9 +4192,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_scan.h libtirpc-0.3.0.tpg/rpcgen/rpc_scan.h
 +void            expected2(tok_kind, tok_kind);
 +void            expected3(tok_kind, tok_kind, tok_kind);
 +
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_svcout.c libtirpc-0.3.0.tpg/rpcgen/rpc_svcout.c
---- libtirpc-0.3.0/rpcgen/rpc_svcout.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_svcout.c	2015-05-12 19:20:38.842608692 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_svcout.c libtirpc-0.3.2.tpg/rpcgen/rpc_svcout.c
+--- libtirpc-0.3.2/rpcgen/rpc_svcout.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_svcout.c	2015-06-17 17:51:53.490954593 +0000
 @@ -0,0 +1,882 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -5077,9 +5078,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_svcout.c libtirpc-0.3.0.tpg/rpcgen/rpc_svco
 +	if (inetdflag)
 +		f_print(fout, "\t}\n");
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_tblout.c libtirpc-0.3.0.tpg/rpcgen/rpc_tblout.c
---- libtirpc-0.3.0/rpcgen/rpc_tblout.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_tblout.c	2015-05-12 19:20:38.843608719 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_tblout.c libtirpc-0.3.2.tpg/rpcgen/rpc_tblout.c
+--- libtirpc-0.3.2/rpcgen/rpc_tblout.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_tblout.c	2015-06-17 17:51:53.490954593 +0000
 @@ -0,0 +1,165 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -5246,9 +5247,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_tblout.c libtirpc-0.3.0.tpg/rpcgen/rpc_tblo
 +	}
 +	f_print(fout, ",\n");
 +}
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_util.c libtirpc-0.3.0.tpg/rpcgen/rpc_util.c
---- libtirpc-0.3.0/rpcgen/rpc_util.c	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_util.c	2015-05-12 19:20:38.844608746 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_util.c libtirpc-0.3.2.tpg/rpcgen/rpc_util.c
+--- libtirpc-0.3.2/rpcgen/rpc_util.c	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_util.c	2015-06-17 17:51:53.490954593 +0000
 @@ -0,0 +1,479 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -5729,9 +5730,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_util.c libtirpc-0.3.0.tpg/rpcgen/rpc_util.c
 +	return (NULL);
 +}
 +
-diff -Naur libtirpc-0.3.0/rpcgen/rpc_util.h libtirpc-0.3.0.tpg/rpcgen/rpc_util.h
---- libtirpc-0.3.0/rpcgen/rpc_util.h	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpc_util.h	2015-05-12 19:20:38.845608773 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpc_util.h libtirpc-0.3.2.tpg/rpcgen/rpc_util.h
+--- libtirpc-0.3.2/rpcgen/rpc_util.h	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpc_util.h	2015-06-17 17:51:53.491954620 +0000
 @@ -0,0 +1,166 @@
 +/*
 + * Copyright (c) 2009, Sun Microsystems, Inc.
@@ -5899,9 +5900,9 @@ diff -Naur libtirpc-0.3.0/rpcgen/rpc_util.h libtirpc-0.3.0.tpg/rpcgen/rpc_util.h
 +int		write_sample_clnt(definition *);
 +void		write_sample_clnt_main(void);
 +void		add_sample_msg(void);
-diff -Naur libtirpc-0.3.0/rpcgen/rpcgen.1 libtirpc-0.3.0.tpg/rpcgen/rpcgen.1
---- libtirpc-0.3.0/rpcgen/rpcgen.1	1970-01-01 00:00:00.000000000 +0000
-+++ libtirpc-0.3.0.tpg/rpcgen/rpcgen.1	2015-05-12 19:20:38.830608368 +0000
+diff -Naur libtirpc-0.3.2/rpcgen/rpcgen.1 libtirpc-0.3.2.tpg/rpcgen/rpcgen.1
+--- libtirpc-0.3.2/rpcgen/rpcgen.1	1970-01-01 00:00:00.000000000 +0000
++++ libtirpc-0.3.2.tpg/rpcgen/rpcgen.1	2015-06-17 17:51:53.491954620 +0000
 @@ -0,0 +1,521 @@
 +.\" @(#)rpcgen.1 1.35 93/06/02 SMI
 +.\" $FreeBSD: src/usr.bin/rpcgen/rpcgen.1,v 1.12.2.4 2002/06/21 15:28:50 charnier Exp $
