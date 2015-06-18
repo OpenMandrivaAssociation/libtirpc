@@ -9,7 +9,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.3.2
-Release:	1
+Release:	2
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -22,6 +22,7 @@ Source13:	yp_prot.h
 Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
+Patch1:		libtirpc-0.3.2-fix-undefined-symbol-__rpc_get_default_domain.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
