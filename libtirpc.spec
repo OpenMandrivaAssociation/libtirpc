@@ -4,12 +4,11 @@
 %define static	%mklibname -d -s tirpc
 
 %bcond_without	gss
-%define _disable_ld_no_undefined 1
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	0.3.2
-Release:	2
+Release:	3
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -32,6 +31,7 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
+Patch13:	libtirpc-0.3.2-des_crypt.patch
 
 BuildRequires:	libtool
 %if %{with gss}
