@@ -1,4 +1,4 @@
-%define major	1
+%define major	3
 %define libname	%mklibname tirpc %{major}
 %define devname	%mklibname tirpc -d
 %define static	%mklibname -d -s tirpc
@@ -7,8 +7,8 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	0.3.2
-Release:	4
+Version:	1.0.1
+Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -21,8 +21,9 @@ Source13:	yp_prot.h
 Source14:	ypclnt.h
 Source15:	key_prot.h
 Source16:	rpc_des.h
-Patch1:		libtirpc-0.3.2-fix-undefined-symbol-__rpc_get_default_domain.patch
+Patch1:		libtirpc-1.0.1-duplicate-symbols.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
+Patch3:		libtirpc-1.0.1-DES-crypt.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
@@ -31,7 +32,6 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
-Patch13:	libtirpc-0.3.2-des_crypt.patch
 
 BuildRequires:	libtool
 %if %{with gss}

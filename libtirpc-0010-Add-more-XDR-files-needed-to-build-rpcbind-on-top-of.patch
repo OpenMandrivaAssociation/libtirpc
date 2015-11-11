@@ -1,5 +1,5 @@
---- libtirpc-0.2.4/Makefile.am.0012~	2014-07-02 19:20:10.277254162 +0200
-+++ libtirpc-0.2.4/Makefile.am	2014-07-02 19:21:13.207866111 +0200
+--- libtirpc-1.0.1/Makefile.am.0012~	2015-11-11 19:07:44.489444987 +0100
++++ libtirpc-1.0.1/Makefile.am	2015-11-11 19:07:44.506444889 +0100
 @@ -1,6 +1,12 @@
  SUBDIRS = src man doc rpcgen
  ACLOCAL_AMFLAGS = -I m4
@@ -23,15 +23,15 @@
  			 tirpc/rpc/xdr.h \
  			 tirpc/rpc/types.h \
  			 tirpc/rpc/svc_soc.h \
-@@ -41,5 +50,5 @@ nobase_include_HEADERS = tirpc/netconfig
+@@ -48,5 +57,5 @@ endif
  pkgconfigdir=$(libdir)/pkgconfig
  pkgconfig_DATA = libtirpc.pc
  
 -CLEANFILES	       = cscope.* *~
 +CLEANFILES	       = $(GENFILES) cscope.* *~
  DISTCLEANFILES	       = Makefile.in libtirpc*.tar.gz
---- libtirpc-0.2.4/tirpc/rpcsvc/mount.x.0012~	2014-07-02 19:20:10.303921088 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/mount.x	2014-07-02 19:20:10.303921088 +0200
+--- libtirpc-1.0.1/tirpc/rpcsvc/mount.x.0012~	2015-11-11 19:07:44.506444889 +0100
++++ libtirpc-1.0.1/tirpc/rpcsvc/mount.x	2015-11-11 19:07:44.506444889 +0100
 @@ -0,0 +1,257 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -290,8 +290,8 @@
 +	} = 3;
 +#endif
 +} = 100005;
---- libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x.0012~	2014-07-02 19:20:10.303921088 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/nfs_prot.x	2014-07-02 19:20:10.303921088 +0200
+--- libtirpc-1.0.1/tirpc/rpcsvc/nfs_prot.x.0012~	2015-11-11 19:07:44.507444883 +0100
++++ libtirpc-1.0.1/tirpc/rpcsvc/nfs_prot.x	2015-11-11 19:07:44.507444883 +0100
 @@ -0,0 +1,1266 @@
 +/*
 + * Sun RPC is a product of Sun Microsystems, Inc. and is provided for
@@ -1559,8 +1559,8 @@
 +} = 100003;
 +#endif
 +
---- libtirpc-0.2.4/tirpc/rpcsvc/rquota.x.0012~	2014-07-02 19:20:10.303921088 +0200
-+++ libtirpc-0.2.4/tirpc/rpcsvc/rquota.x	2014-07-02 19:20:10.303921088 +0200
+--- libtirpc-1.0.1/tirpc/rpcsvc/rquota.x.0012~	2015-11-11 19:07:44.507444883 +0100
++++ libtirpc-1.0.1/tirpc/rpcsvc/rquota.x	2015-11-11 19:07:44.507444883 +0100
 @@ -0,0 +1,67 @@
 +/*
 + * Remote quota protocol
