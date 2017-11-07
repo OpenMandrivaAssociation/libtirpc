@@ -1,13 +1,13 @@
-%define major	3
-%define libname	%mklibname tirpc %{major}
-%define devname	%mklibname tirpc -d
-%define static	%mklibname -d -s tirpc
+%define major 3
+%define libname %mklibname tirpc %{major}
+%define devname %mklibname tirpc -d
+%define static %mklibname -d -s tirpc
 
 %bcond_without	gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.0.1
+Version:	1.0.2
 Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
