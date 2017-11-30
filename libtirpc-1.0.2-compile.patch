@@ -1,0 +1,10 @@
+--- libtirpc-1.0.2/src/xdr_sizeof.c.omv~	2017-11-07 11:00:04.857876358 +0100
++++ libtirpc-1.0.2/src/xdr_sizeof.c	2017-11-07 11:00:12.766869298 +0100
+@@ -39,6 +39,7 @@
+ #include <rpc/xdr.h>
+ #include <sys/types.h>
+ #include <stdlib.h>
++#include <stdint.h>
+ #include "un-namespace.h"
+ 
+ /* ARGSUSED */

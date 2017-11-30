@@ -1,13 +1,13 @@
-%define major	3
-%define libname	%mklibname tirpc %{major}
-%define devname	%mklibname tirpc -d
-%define static	%mklibname -d -s tirpc
+%define major 3
+%define libname %mklibname tirpc %{major}
+%define devname %mklibname tirpc -d
+%define static %mklibname -d -s tirpc
 
 %bcond_without	gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.0.1
+Version:	1.0.2
 Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
@@ -23,7 +23,7 @@ Source15:	key_prot.h
 Source16:	rpc_des.h
 Patch1:		libtirpc-1.0.1-duplicate-symbols.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
-Patch3:		libtirpc-1.0.1-DES-crypt.patch
+Patch3:		libtirpc-1.0.2-compile.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
