@@ -39,7 +39,7 @@ BuildRequires:	krb5-devel
 %else
 BuildConflicts:	krb5-devel
 %endif
-BuildRequires:	pkgconfig
+BuildRequires:	pkgconfig(com_err)
 BuildRequires:	autoconf
 BuildRequires:	automake
 
