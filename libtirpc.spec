@@ -8,19 +8,11 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	1.0.2
-Release:	2
+Release:	3
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
-# Related headers that were removed from glibc
-Source10:	nis.h
-Source11:	nis_tags.h
-Source12:	nislib.h
-Source13:	yp_prot.h
-Source14:	ypclnt.h
-Source15:	key_prot.h
-Source16:	rpc_des.h
 Patch1:		libtirpc-1.0.1-duplicate-symbols.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch3:		libtirpc-1.0.2-compile.patch
@@ -32,6 +24,7 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
+Patch13:	libtirpc-1.0.2-missing_symbol.patch
 
 BuildRequires:	libtool
 %if %{with gss}
@@ -88,9 +81,6 @@ This package contains a static library version of the libtirpc library.
 %apply_patches
 autoreconf -fiv
 
-install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} tirpc/rpcsvc/
-install -m644 %{SOURCE15} %{SOURCE16} tirpc/rpc/
-
 %build
 CONFIGURE_TOP="$PWD"
 export CFLAGS="%{optflags} -fPIC"
@@ -111,8 +101,6 @@ export CFLAGS="%{optflags} -fPIC"
 %makeinstall_std
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
-install -m644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} %{SOURCE14} %{buildroot}%{_includedir}/tirpc/rpcsvc/
-install -m644 %{SOURCE15} %{SOURCE16} %{buildroot}%{_includedir}/tirpc/rpc/
 
 install -d %{buildroot}%{_includedir}/{rpc,rpcsvc}/
 cd %{buildroot}%{_includedir}/tirpc/rpc
