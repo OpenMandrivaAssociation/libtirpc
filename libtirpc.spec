@@ -3,19 +3,18 @@
 %define devname %mklibname tirpc -d
 %define static %mklibname -d -s tirpc
 
-%bcond_without	gss
+%bcond_without gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.0.2
-Release:	3
+Version:	1.0.3
+Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 Patch1:		libtirpc-1.0.1-duplicate-symbols.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
-Patch3:		libtirpc-1.0.2-compile.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
@@ -24,7 +23,6 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch10:	libtirpc-0002-uClibc-without-RPC-support-does-not-install-rpcent.h.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
-Patch13:	libtirpc-1.0.2-missing_symbol.patch
 
 BuildRequires:	libtool
 %if %{with gss}
@@ -53,27 +51,27 @@ Summary:	Transport Independent RPC Library
 Group:		System/Libraries
 Requires:	%{name} >= %{EVRD}
 
-%description -n	%{libname}
+%description -n %{libname}
 This package contains the shared library for %{name}.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
 Provides:	tirpc-devel = %{EVRD}
 Conflicts:	glibc < 6:2.17-1.22064.3
 
-%description -n	%{devname}
+%description -n %{devname}
 This package includes header files and libraries necessary for developing
 programs which use the tirpc library.
 
-%package -n	%{static}
+%package -n %{static}
 Summary:	Static version of libtirpc library
 Group:		Development/C
 Requires:	%{devname} >= %{EVRD}
 Provides:	tirpc-static-devel = %{EVRD}
 
-%description -n	%{static}
+%description -n %{static}
 This package contains a static library version of the libtirpc library.
 
 %prep
@@ -105,11 +103,11 @@ install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
 install -d %{buildroot}%{_includedir}/{rpc,rpcsvc}/
 cd %{buildroot}%{_includedir}/tirpc/rpc
 for i in *.h; do
-	ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
+    ln -sf ../tirpc/rpc/$i %{buildroot}%{_includedir}/rpc/$i
 done
 cd ../rpcsvc
 for i in *.h; do
-	ln -sf ../tirpc/rpcsvc/$i %{buildroot}%{_includedir}/rpcsvc/$i
+    ln -sf ../tirpc/rpcsvc/$i %{buildroot}%{_includedir}/rpcsvc/$i
 done
 cd %{buildroot}%{_includedir}
 ln -s tirpc/netconfig.h .
