@@ -8,7 +8,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	1.0.3
-Release:	1
+Release:	2
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -59,7 +59,7 @@ Summary:	Development files for the libtirpc library
 Group:		Development/C
 Requires:	%{libname} >= %{EVRD}
 Provides:	tirpc-devel = %{EVRD}
-Conflicts:	glibc < 6:2.17-1.22064.3
+Conflicts:	glibc < 2.17-1.22064.3
 
 %description -n %{devname}
 This package includes header files and libraries necessary for developing
