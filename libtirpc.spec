@@ -7,8 +7,8 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.0.3
-Release:	2
+Version:	1.1.4
+Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -75,8 +75,8 @@ Provides:	tirpc-static-devel = %{EVRD}
 This package contains a static library version of the libtirpc library.
 
 %prep
-%setup -q
-%apply_patches
+%autosetup -p1
+
 autoreconf -fiv
 
 %build
@@ -93,10 +93,10 @@ export CFLAGS="%{optflags} -fPIC"
 	--disable-gssapi
 %endif
 
-%make all
+%make_build all
 
 %install
-%makeinstall_std
+%make_install
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
 
