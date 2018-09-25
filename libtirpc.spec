@@ -120,6 +120,7 @@ ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libti
 
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
+%config(noreplace) %{_sysconfdir}/bindresvport.blacklist
 
 %files -n %{libname}
 /%{_lib}/libtirpc.so.%{major}*
