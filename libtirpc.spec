@@ -8,7 +8,7 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	1.3.2
-Release:	1
+Release:	2
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -81,8 +81,7 @@ autoreconf -fiv
 CONFIGURE_TOP="$PWD"
 export CFLAGS="%{optflags} -fPIC"
 
-%configure	\
-	--libdir=/%{_lib} \
+%configure \
 	--enable-shared \
 	--enable-static \
 %if %{with gss}
@@ -110,18 +109,12 @@ done
 cd %{buildroot}%{_includedir}
 ln -s tirpc/netconfig.h .
 
-install -d %{buildroot}%{_libdir}
-mv %{buildroot}/%{_lib}/libtirpc.a %{buildroot}%{_libdir}
-mv %{buildroot}/%{_lib}/pkgconfig %{buildroot}%{_libdir}
-rm %{buildroot}/%{_lib}/libtirpc.so
-ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libtirpc.so
-
 %files
 %config(noreplace) %{_sysconfdir}/netconfig
 %config(noreplace) %{_sysconfdir}/bindresvport.blacklist
 
 %files -n %{libname}
-/%{_lib}/libtirpc.so.%{major}*
+%{_libdir}/libtirpc.so.%{major}*
 
 %files -n %{devname}
 %doc AUTHORS ChangeLog COPYING NEWS README
@@ -132,7 +125,7 @@ ln -srf %{buildroot}/%{_lib}/libtirpc.so.%{major}.* %{buildroot}%{_libdir}/libti
 %{_includedir}/netconfig.h
 %{_includedir}/rpc/*
 %{_includedir}/rpcsvc/*
-%{_mandir}/man[135]/*
+%doc %{_mandir}/man[135]/*
 
 %files -n %{static}
 %{_libdir}/libtirpc.a
