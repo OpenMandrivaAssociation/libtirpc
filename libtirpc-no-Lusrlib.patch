@@ -1,0 +1,11 @@
+diff -up libtirpc-1.3.3/libtirpc.pc.in.omv~ libtirpc-1.3.3/libtirpc.pc.in
+--- libtirpc-1.3.3/libtirpc.pc.in.omv~	2023-06-07 19:06:13.450482397 +0200
++++ libtirpc-1.3.3/libtirpc.pc.in	2023-06-07 19:12:32.462164478 +0200
+@@ -7,6 +7,6 @@ Name: libtirpc
+ Description: Transport Independent RPC Library
+ Requires:
+ Version: @PACKAGE_VERSION@
+-Libs: -L${libdir} -ltirpc
++Libs: -ltirpc
+ Libs.private: @PTHREAD_LIBS@
+ Cflags: -I${includedir}/tirpc

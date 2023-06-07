@@ -8,11 +8,12 @@
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
 Version:	1.3.3
-Release:	2
+Release:	3
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
+Patch0:		libtirpc-no-Lusrlib.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
 Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
