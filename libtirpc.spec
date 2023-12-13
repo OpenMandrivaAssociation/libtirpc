@@ -1,14 +1,16 @@
 %define major 3
-%define libname %mklibname tirpc %{major}
+%define oldlibname %mklibname tirpc 3
+%define libname %mklibname tirpc
 %define devname %mklibname tirpc -d
 %define static %mklibname -d -s tirpc
+%global build_ldflags %{build_ldflags} -Wl,--undefined-version
 
 %bcond_without gss
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.3.3
-Release:	3
+Version:	1.3.4
+Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
 Url:		http://sourceforge.net/projects/libtirpc
@@ -49,6 +51,7 @@ by almost 70 vendors on all major operating systems.  TS-RPC source code
 Summary:	Transport Independent RPC Library
 Group:		System/Libraries
 Requires:	%{name} >= %{EVRD}
+%rename %{oldlibname}
 
 %description -n %{libname}
 This package contains the shared library for %{name}.
