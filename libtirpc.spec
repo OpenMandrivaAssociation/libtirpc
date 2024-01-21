@@ -25,7 +25,7 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
 
-BuildRequires:	libtool
+BuildRequires:	slibtool
 %if %{with gss}
 BuildRequires:	krb5-devel
 %else
@@ -94,10 +94,20 @@ export CFLAGS="%{optflags} -fPIC"
 	--disable-gssapi
 %endif
 
-%make_build all
+%make_build all LIBTOOL=slibtool
+
+%if %{cross_compiling}
+# rpcgen is built as a HOST tool to build libtirpc itself -- but we need to
+# package it as a TARGET tool, so let's build it as a TARGET tool now that
+# the HOST tool has done its job
+cd rpcgen
+sed -i -e 's,CC_FOR_BUILD,CC,g' -e 's,CFLAGS_FOR_BUILD,CFLAGS,g' Makefile*
+make clean
+%make_build CC="%{__cc}" LIBTOOL=slibtool
+%endif
 
 %install
-%make_install
+%make_install LIBTOOL=slibtool
 install -m 755 -d %{buildroot}%{_sysconfdir}
 install -m 644 doc/netconfig %{buildroot}%{_sysconfdir}/netconfig
 
