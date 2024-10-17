@@ -13,7 +13,7 @@ Version:	1.3.5
 Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
-Url:		http://sourceforge.net/projects/libtirpc
+Url:		https://sourceforge.net/projects/libtirpc
 Source0:	http://downloads.sourceforge.net/libtirpc/%{name}-%{version}.tar.bz2
 Patch0:		libtirpc-no-Lusrlib.patch
 Patch2:		libtirpc-0.2.3-types.h.patch
