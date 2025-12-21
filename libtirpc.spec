@@ -25,6 +25,7 @@ Patch8:		libtirpc-0.3.0-sizeof.patch
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
 
+BuildRequires:	libtool-base
 BuildRequires:	slibtool
 %if %{with gss}
 BuildRequires:	krb5-devel
