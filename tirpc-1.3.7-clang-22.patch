@@ -1,0 +1,14 @@
+diff -up libtirpc-1.3.7/src/bindresvport.c.omv~ libtirpc-1.3.7/src/bindresvport.c
+--- libtirpc-1.3.7/src/bindresvport.c.omv~	2026-04-08 20:21:03.790018943 +0200
++++ libtirpc-1.3.7/src/bindresvport.c	2026-04-08 20:21:14.852384903 +0200
+@@ -57,9 +57,7 @@ extern pthread_mutex_t port_lock;
+  * Bind a socket to a privileged IP port
+  */
+ int
+-bindresvport(sd, sin)
+-        int sd;
+-        struct sockaddr_in *sin;
++bindresvport(int sd, struct sockaddr_in *sin)
+ {
+         return bindresvport_sa(sd, (struct sockaddr *)sin);
+ }

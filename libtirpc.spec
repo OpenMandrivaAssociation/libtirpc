@@ -9,7 +9,7 @@
 
 Summary:	Transport Independent RPC Library
 Name:		libtirpc
-Version:	1.3.5
+Version:	1.3.7
 Release:	1
 License:	SISSL and BSD
 Group:		System/Libraries
@@ -21,6 +21,7 @@ Patch5:		libtirpc-0008-Add-rpcgen-program-from-nfs-utils-sources.patch
 Patch6:		libtirpc-0.2.3-update-rpcgen-from-glibc.patch
 Patch7:		rpcgen-compile.patch
 Patch8:		libtirpc-0.3.0-sizeof.patch
+Patch9:		tirpc-1.3.7-clang-22.patch
 # disabled as it breaks nfs etc.
 #Patch8:	tirpc-xdr-update-from-glibc.patch
 Patch12:	libtirpc-0010-Add-more-XDR-files-needed-to-build-rpcbind-on-top-of.patch
